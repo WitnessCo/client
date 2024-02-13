@@ -1,0 +1,56 @@
+{
+	"name": "@witnesswtf/client",
+	"version": "0.1.1",
+	"description": "Typescript SDK for Witness",
+	"type": "module",
+	"license": "MIT",
+	"author": {
+		"url": "https://github.com/sinasab",
+		"email": "sinasabet81@gmail.com",
+		"name": "Sina Sabet"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/WitnessCo/client"
+	},
+	"private": false,
+	"access": "public",
+	"homepage": "https://github.com/WitnessCo/client",
+	"bugs": "https://github.com/WitnessCo/client/issues",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"types": "./dist/index.d.ts",
+	"files": ["README.md", "dist", "src"],
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"clean": "rm -rf node_modules dist docs",
+		"format": "biome check --apply src",
+		"ci": "biome ci src",
+		"typecheck": "tsc --noEmit",
+		"build": "tsup src/index.ts --format cjs,esm --dts --minify",
+		"generate:openapi": "tsx src/fetchOpenapi.ts",
+		"example": "tsx watch ./src/example.ts",
+		"dev": "tsup src/index.ts --format cjs,esm --dts --minify --watch",
+		"generate:docs": "tsx src/genDocs.ts"
+	},
+	"dependencies": {
+		"fets": "^0.6.7"
+	},
+	"peerDependencies": {
+		"viem": "^2.4.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.5.3",
+		"@changesets/cli": "^2.27.1",
+		"@types/fs-extra": "^11.0.4",
+		"fs-extra": "^11.2.0",
+		"tsup": "^7.2.0",
+		"tsx": "^3.14.0",
+		"typedoc": "^0.25.2",
+		"typedoc-plugin-markdown": "^3.16.0",
+		"typescript": "^5.2.2",
+		"viem": "^2.4.0"
+	}
+}
