@@ -1,0 +1,22 @@
+name: "Setup repo and run CI"
+description: "Prepare repository and all dependencies"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup bun
+      uses: oven-sh/setup-bun@v1
+      with:
+          bun-version: latest
+
+    - name: Install packages
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Build code
+      shell: bash
+      run: bun run build
+
+    - name: CI
+      shell: bash
+      run: bun run ci && bun run typecheck

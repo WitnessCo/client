@@ -1,0 +1,31 @@
+name: Main
+# On pushes to main, run CI and then
+# publish public packages to npm via changesets.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref}}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: CI
+        uses: ./.github/workflows/ci
+      - name: Build & Publish
+        id: changesets
+        uses: changesets/action@v1.4.5
+        with:
+          publish: bun run build && bun generate:docs && bun run publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
