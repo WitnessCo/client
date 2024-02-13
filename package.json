@@ -33,7 +33,8 @@
 		"generate:openapi": "tsx src/fetchOpenapi.ts",
 		"example": "tsx watch ./src/example.ts",
 		"dev": "tsup src/index.ts --format cjs,esm --dts --minify --watch",
-		"generate:docs": "tsx src/genDocs.ts"
+		"generate:docs": "tsx src/genDocs.ts",
+		"publish": "changeset publish"
 	},
 	"dependencies": {
 		"fets": "^0.6.7"
