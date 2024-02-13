@@ -1,9 +1,3 @@
-import {
-	SupportedChainType,
-	abis,
-	deployments,
-	getChainFromChainId,
-} from "@witnesswtf/contracts";
 import { type NormalizeOAS, OASClient, createClient } from "fets";
 import {
 	http,
@@ -18,6 +12,12 @@ import {
 	getContract,
 	keccak256,
 } from "viem";
+import { witness as witnessAbi } from "./contracts/abis";
+import { witness as witnessDeployments } from "./contracts/deployments";
+import {
+	type SupportedChainType,
+	getSupportedChainFromChainId,
+} from "./contracts/utils";
 import type openapi from "./openapi";
 import { strArrToHash, strToHash } from "./utils";
 
@@ -74,7 +74,7 @@ export class WitnessClient {
 
 	readonly contract: Promise<
 		GetContractReturnType<
-			typeof abis.Witness,
+			typeof witnessAbi,
 			PublicClient<Transport, Chain>,
 			Address
 		>
@@ -99,7 +99,7 @@ export class WitnessClient {
 		const tmpClient = createPublicClient({ transport });
 		this.chain = (async () => {
 			const maybeChainId = await tmpClient.getChainId();
-			return getChainFromChainId(maybeChainId);
+			return getSupportedChainFromChainId(maybeChainId);
 		})();
 		this.contract = this.chain.then((chain) => {
 			const client = createPublicClient({
@@ -108,8 +108,8 @@ export class WitnessClient {
 			});
 			return getContract({
 				client,
-				address: deployments.Witness[chain.id],
-				abi: abis.Witness,
+				address: witnessDeployments[chain.id],
+				abi: witnessAbi,
 			});
 		});
 	}
@@ -442,11 +442,13 @@ export class WitnessClient {
 		const { leafIndex, leafHash, leftHashes, rightHashes, targetRootHash } =
 			proof;
 		const res = await contract.read.safeVerifyProof([
-			leafIndex,
-			leafHash,
-			leftHashes ?? [],
-			rightHashes ?? [],
-			targetRootHash,
+			{
+				index: leafIndex,
+				leaf: leafHash,
+				leftRange: leftHashes ?? [],
+				rightRange: rightHashes ?? [],
+				targetRoot: targetRootHash,
+			},
 		]);
 		return res;
 	}
