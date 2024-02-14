@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.9
+
+### Patch Changes
+
+- 933eb4a: Bump for public release
+
 ## 0.1.8
 
 ### Patch Changes
