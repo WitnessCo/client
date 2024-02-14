@@ -20,12 +20,7 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"README.md",
-		"dist",
-		"docs",
-		"src"
-	],
+	"files": ["README.md", "dist", "docs", "src"],
 	"engines": {
 		"node": ">=18"
 	},

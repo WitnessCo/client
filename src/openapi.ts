@@ -42,13 +42,10 @@ export default {
 						name: "chainId",
 						in: "query",
 						required: false,
-						schema: {
-							anyOf: [{ not: {} }, { type: "number" }],
-							default: 11155111,
-						},
+						schema: { anyOf: [{ not: {} }, { type: "number" }], default: 8453 },
 						description:
-							"Optional chain ID of the checkpoint; defaults to 11155111",
-						example: 11155111,
+							"Optional chain ID of the checkpoint; defaults to 8453",
+						example: 8453,
 					},
 				],
 				responses: {
@@ -108,7 +105,7 @@ export default {
 								example: {
 									txHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
-									chainId: 11155111,
+									chainId: 8453,
 									status: "included",
 									rootHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
@@ -143,13 +140,10 @@ export default {
 						name: "chainId",
 						in: "query",
 						required: false,
-						schema: {
-							anyOf: [{ not: {} }, { type: "number" }],
-							default: 11155111,
-						},
+						schema: { anyOf: [{ not: {} }, { type: "number" }], default: 8453 },
 						description:
-							"Optional chain ID of the checkpoint; defaults to 11155111",
-						example: 11155111,
+							"Optional chain ID of the checkpoint; defaults to 8453",
+						example: 8453,
 					},
 				],
 				responses: {
@@ -209,7 +203,7 @@ export default {
 								example: {
 									txHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
-									chainId: 11155111,
+									chainId: 8453,
 									status: "included",
 									rootHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
@@ -299,7 +293,7 @@ export default {
 								example: {
 									txHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
-									chainId: 11155111,
+									chainId: 8453,
 									status: "included",
 									rootHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
@@ -361,12 +355,9 @@ export default {
 						name: "chainId",
 						in: "query",
 						required: false,
-						schema: {
-							anyOf: [{ not: {} }, { type: "number" }],
-							default: 11155111,
-						},
+						schema: { anyOf: [{ not: {} }, { type: "number" }], default: 8453 },
 						description:
-							"Optional chain ID of the checkpoint; defaults to 11155111",
+							"Optional chain ID of the checkpoint; defaults to 8453",
 					},
 					{
 						name: "leafHash",
@@ -386,42 +377,16 @@ export default {
 								schema: {
 									type: "object",
 									properties: {
-										blockNumber: {
-											type: "string",
-											description:
-												"Earliest block number the hash was included in",
-										},
 										timestamp: {
 											type: "string",
 											description:
 												"Timestamp of the earliest block the hash was included in, in epoch seconds",
 										},
-										txHash: {
-											type: "string",
-											description:
-												"Transaction hash of the earliest checkpoint the hash was included in",
-										},
-										humanTimestamp: {
-											type: "string",
-											description: "Human readable timestamp",
-										},
 									},
-									required: [
-										"blockNumber",
-										"timestamp",
-										"txHash",
-										"humanTimestamp",
-									],
+									required: ["timestamp"],
 									additionalProperties: false,
 								},
-								example: {
-									blockNumber: "123456789",
-									timestamp: "123456789",
-									txHash:
-										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
-									humanTimestamp:
-										"Wed Oct 25 2023 12:40:05 GMT-0700 (Pacific Daylight Time)",
-								},
+								example: { timestamp: "123456789" },
 							},
 						},
 					},
@@ -501,13 +466,10 @@ export default {
 						name: "chainId",
 						in: "query",
 						required: false,
-						schema: {
-							anyOf: [{ not: {} }, { type: "number" }],
-							default: 11155111,
-						},
+						schema: { anyOf: [{ not: {} }, { type: "number" }], default: 8453 },
 						description:
-							"Optional chain ID of the checkpoint; defaults to 11155111",
-						example: 11155111,
+							"Optional chain ID of the checkpoint; defaults to 8453",
+						example: 8453,
 					},
 				],
 				responses: {
@@ -805,5 +767,5 @@ export default {
 		},
 	},
 	tags: [{ name: "core" }, { name: "utility" }],
-	externalDocs: { url: "https://witness.co/" },
+	externalDocs: { url: "https://docs.witness.co/" },
 } as const;

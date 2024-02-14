@@ -31,9 +31,9 @@ export type EndpointType = OpenapiConfigType["servers"][number]["url"];
  */
 export const DEFAULT_API_URL = "https://api.witness.co" as const;
 
-// Defaults to Base Sepolia for onchain stuff.
-// TODO(sina) change to mainnet when we're ready.
-const DEFAULT_ETH_RPC_URL = "https://base-sepolia.publicnode.com";
+// Defaults to Base for onchain stuff.
+const DEFAULT_ETH_RPC_URL =
+	"https://base-mainnet.g.alchemy.com/v2/GpTxZImfKRXK_3TbwxnEaz16_URdRep0" as const;
 
 /**
  * Represents a client for interacting with the Witness server.
