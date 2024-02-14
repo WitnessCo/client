@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.8
+
+### Patch Changes
+
+- 90a0ae0: Adding prod deploys: mainnet, optimism, base
+
 ## 0.1.7
 
 ### Patch Changes
