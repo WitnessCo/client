@@ -67,7 +67,7 @@ Constructs an instance of `WitnessClient`.
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `authToken` | `string` | `""` | - |
+| `authToken` | `string` | `""` | The authentication token to use for requests. |
 | `endpoint` | ``"https://api.witness.co"`` | `DEFAULT_API_URL` | The URL of the Witness server. |
 | `fetchFn` | (`input`: `RequestInfo` \| `URL`, `init?`: `RequestInit`) => `Promise`\<`Response`\>(`input`: `string` \| `Request` \| `URL`, `init?`: `RequestInit`) => `Promise`\<`Response`\> | `fetch` | [MDN Reference](https://developer.mozilla.org/docs/Web/API/fetch) |
 | `ethRpc` | `string` | `DEFAULT_ETH_RPC_URL` | The URL of the Ethereum RPC endpoint to use. Implies the chainId used in server calls too. |
@@ -78,7 +78,7 @@ Constructs an instance of `WitnessClient`.
 
 #### Defined in
 
-[src/WitnessClient.ts:89](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L89)
+[src/WitnessClient.ts:87](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L87)
 
 ## Properties
 
@@ -86,9 +86,11 @@ Constructs an instance of `WitnessClient`.
 
 • `Private` `Readonly` **authToken**: `string` = `""`
 
+The authentication token to use for requests.
+
 #### Defined in
 
-[src/WitnessClient.ts:90](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L90)
+[src/WitnessClient.ts:88](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L88)
 
 ## Methods
 
@@ -112,7 +114,7 @@ The checkpoint with the specified transaction hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:348](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L348)
+[src/WitnessClient.ts:346](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L346)
 
 ___
 
@@ -130,7 +132,7 @@ The current tree state.
 
 #### Defined in
 
-[src/WitnessClient.ts:121](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L121)
+[src/WitnessClient.ts:119](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L119)
 
 ___
 
@@ -154,7 +156,7 @@ The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:275](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L275)
+[src/WitnessClient.ts:273](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L273)
 
 ___
 
@@ -172,7 +174,7 @@ The latest onchain checkpoint.
 
 #### Defined in
 
-[src/WitnessClient.ts:314](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L314)
+[src/WitnessClient.ts:312](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L312)
 
 ___
 
@@ -196,7 +198,7 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:257](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L257)
+[src/WitnessClient.ts:255](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L255)
 
 ___
 
@@ -221,7 +223,7 @@ The Merkle proof for the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:375](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L375)
+[src/WitnessClient.ts:373](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L373)
 
 ___
 
@@ -245,7 +247,7 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:239](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L239)
+[src/WitnessClient.ts:237](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L237)
 
 ___
 
@@ -269,7 +271,7 @@ Hashes a string using the keccak256 algorithm.
 
 #### Defined in
 
-[src/WitnessClient.ts:461](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L461)
+[src/WitnessClient.ts:459](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L459)
 
 ___
 
@@ -293,7 +295,7 @@ The index of the posted leafHash.
 
 #### Defined in
 
-[src/WitnessClient.ts:183](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L183)
+[src/WitnessClient.ts:181](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L181)
 
 ___
 
@@ -324,7 +326,7 @@ checkpointed leaf, it may take up to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:208](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L208)
+[src/WitnessClient.ts:206](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L206)
 
 ___
 
@@ -356,7 +358,7 @@ to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:227](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L227)
+[src/WitnessClient.ts:225](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L225)
 
 ___
 
@@ -392,7 +394,7 @@ potential issues such as rate limits.
 
 #### Defined in
 
-[src/WitnessClient.ts:433](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L433)
+[src/WitnessClient.ts:431](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L431)
 
 ___
 
@@ -427,7 +429,7 @@ proof and checkpoint against the corresponding Witness contract on-chain.
 
 #### Defined in
 
-[src/WitnessClient.ts:405](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L405)
+[src/WitnessClient.ts:403](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L403)
 
 ___
 
@@ -453,4 +455,4 @@ The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:153](https://github.com/WitnessCo/client/blob/729ad56/src/WitnessClient.ts#L153)
+[src/WitnessClient.ts:151](https://github.com/WitnessCo/client/blob/eedebbd/src/WitnessClient.ts#L151)
