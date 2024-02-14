@@ -1,6 +1,20 @@
-import { baseSepolia, optimismSepolia, sepolia } from "viem/chains";
+import {
+	base,
+	baseSepolia,
+	mainnet,
+	optimism,
+	optimismSepolia,
+	sepolia,
+} from "viem/chains";
 
-export const supportedChains = [baseSepolia, sepolia, optimismSepolia] as const;
+export const supportedChains = [
+	base,
+	mainnet,
+	optimism,
+	baseSepolia,
+	sepolia,
+	optimismSepolia,
+] as const;
 
 export type SupportedChainType = (typeof supportedChains)[number];
 
