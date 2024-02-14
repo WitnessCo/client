@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.11
+
+### Patch Changes
+
+- 245b898: Bumping openapi spec and adding mainnet rpc url
+
 ## 0.1.10
 
 ### Patch Changes
