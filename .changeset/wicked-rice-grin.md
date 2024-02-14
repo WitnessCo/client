@@ -1,0 +1,5 @@
+---
+"@witnessco/client": patch
+---
+
+bump
