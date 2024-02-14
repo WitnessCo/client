@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.10
+
+### Patch Changes
+
+- f4ccc2d: adding license
+
 ## 0.1.9
 
 ### Patch Changes
