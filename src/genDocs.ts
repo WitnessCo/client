@@ -27,8 +27,8 @@ async function genLocalDocs() {
 async function cleanContents(input: string) {
 	// Remove crosslinks as the URL structure doesn't match the folder structure.
 	// Here's an example:
-	// Source string: [@witnesswtf/client](../README.md)
-	// Replacement string: @witnesswtf/client
+	// Source string: [@witnessco/client](../README.md)
+	// Replacement string: @witnessco/client
 	const output = input.replaceAll(/\[([^\]]+)\]\(\.[^\)]+\)/g, "$1");
 	return output;
 }

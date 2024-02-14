@@ -1,5 +1,5 @@
 {
-	"name": "@witnesswtf/client",
+	"name": "@witnessco/client",
 	"version": "0.1.2",
 	"description": "Typescript SDK for Witness",
 	"type": "module",
@@ -20,11 +20,7 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"README.md",
-		"dist",
-		"src"
-	],
+	"files": ["README.md", "dist", "src"],
 	"engines": {
 		"node": ">=18"
 	},

@@ -1,4 +1,4 @@
-# @witnesswtf/client
+# @witnessco/client
 
 ## 0.1.2
 

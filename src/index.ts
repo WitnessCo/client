@@ -44,7 +44,7 @@ const getFetchClient = (
  *
  * @example
  * ```ts
- * import { WitnessClient } from "@witnesswtf/client";
+ * import { WitnessClient } from "@witnessco/client";
  *
  * // Instantiate a new client, default params should suffice for now.
  * const witness = new WitnessClient();
