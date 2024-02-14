@@ -21,11 +21,11 @@ jobs:
           fetch-depth: 0
       - name: CI
         uses: ./.github/workflows/ci
-      - name: Publish / prep publish
+      - name: Build & Publish
         id: changesets
         uses: changesets/action@v1.4.5
         with:
-          publish: bun run publish-packages
+          publish: bun run build && bun run publish-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
