@@ -12,9 +12,11 @@ runs:
           bun-version: latest
 
     - name: Install packages
+      shell: bash
       run: bun install --frozen-lockfile
 
     - name: Build code
+      shell: bash
       run: bun run build
 
     - name: CI
