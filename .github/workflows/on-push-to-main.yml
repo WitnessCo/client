@@ -25,7 +25,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1.4.5
         with:
-          publish: bun run build && bun run publish
+          publish: bun run build && bun generate:docs && bun run publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

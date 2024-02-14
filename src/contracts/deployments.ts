@@ -5,5 +5,5 @@ import { SupportedChainIdType } from "./utils";
 export const witness = {
 	[baseSepolia.id]: "0x0000000159C8253802551eEaf8b475db1A50d712",
 	[sepolia.id]: "0x00000008bcf12Eeb9E4162687D6D251f0F4e7FC2",
-	[optimismSepolia.id]: "0x00000004CB434559f8D052F6E476b677a40c3e93",
+	[optimismSepolia.id]: "0x0000000a3fa5CFe56b202F376cCa7334c93aEB8b",
 } satisfies Record<SupportedChainIdType, Address>;
