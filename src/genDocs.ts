@@ -4,9 +4,8 @@ import TypeDoc from "typedoc";
 await genLocalDocs();
 
 // Copy the desired files to the docs app.
-const sourceFile = "docs/classes/WitnessClient.md";
-const destFile =
-	"../../apps/docs/src/pages/api-reference/typescript/WitnessClient.md";
+const sourceFile = "docsTmp/classes/WitnessClient.md";
+const destFile = "docs/WitnessClient.md";
 const contents = await fs.readFile(sourceFile, "utf8");
 const cleanedContents = await cleanContents(contents);
 await fs.writeFile(destFile, cleanedContents);
@@ -16,12 +15,13 @@ async function genLocalDocs() {
 	const app = await TypeDoc.Application.bootstrapWithPlugins({
 		plugin: ["typedoc-plugin-markdown"],
 		entryPoints: ["src/index.ts"],
+		excludeInternal: true,
 	});
 	const project = await app.convert();
 	if (!project) {
 		throw new Error("Failed to convert");
 	}
-	await app.generateDocs(project, "docs");
+	await app.generateDocs(project, "docsTmp");
 }
 
 async function cleanContents(input: string) {

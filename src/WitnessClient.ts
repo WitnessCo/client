@@ -21,7 +21,9 @@ import {
 import type openapi from "./openapi";
 import { strArrToHash, strToHash } from "./utils";
 
+/** @internal */
 export type OpenapiConfigType = NormalizeOAS<typeof openapi>;
+/** @internal */
 export type EndpointType = OpenapiConfigType["servers"][number]["url"];
 
 /**
@@ -32,12 +34,6 @@ export const DEFAULT_API_URL = "https://api.witness.co" as const;
 // Defaults to Base Sepolia for onchain stuff.
 // TODO(sina) change to mainnet when we're ready.
 const DEFAULT_ETH_RPC_URL = "https://base-sepolia.publicnode.com";
-
-const getFetchClient = (
-	endpoint: EndpointType = DEFAULT_API_URL,
-	fetchFn: typeof fetch = fetch,
-): OASClient<OpenapiConfigType> =>
-	createClient<OpenapiConfigType>({ endpoint, fetchFn });
 
 /**
  * Represents a client for interacting with the Witness server.
@@ -66,8 +62,11 @@ const getFetchClient = (
  * ```
  */
 export class WitnessClient {
+	/** @internal */
 	private readonly client: OASClient<OpenapiConfigType>;
+	/** @internal */
 	private readonly chain: Promise<SupportedChainType>;
+	/** @internal */
 	private readonly contract: Promise<
 		GetContractReturnType<
 			typeof witnessAbi,
@@ -79,7 +78,9 @@ export class WitnessClient {
 	/**
 	 * Constructs an instance of `WitnessClient`.
 	 *
+	 * @param {string} authToken - The authentication token to use for requests.
 	 * @param {string} endpoint - The URL of the Witness server.
+	 * @param {typeof fetch} fetchFn - The fetch function to use for requests.
 	 * @param {string} ethRpc - The URL of the Ethereum RPC endpoint to use.
 	 * 	Implies the chainId used in server calls too.
 	 */
@@ -89,7 +90,7 @@ export class WitnessClient {
 		fetchFn: typeof fetch = fetch,
 		ethRpc: string = DEFAULT_ETH_RPC_URL,
 	) {
-		this.client = getFetchClient(endpoint, fetchFn);
+		this.client = createClient<OpenapiConfigType>({ endpoint, fetchFn });
 		// Initialize contract instance.
 		const transport = http(ethRpc);
 		const tmpClient = createPublicClient({ transport });
