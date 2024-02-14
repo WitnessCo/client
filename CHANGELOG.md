@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.7
+
+### Patch Changes
+
+- eedebbd: fixing op sepolia deploy addr
+
 ## 0.1.6
 
 ### Patch Changes
