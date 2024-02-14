@@ -4,8 +4,6 @@ description: "Prepare repository and all dependencies"
 runs:
   using: "composite"
   steps:
-    - uses: pnpm/action-setup@v2.4.0
-
     - name: Setup bun
       uses: oven-sh/setup-bun@v1
       with:
