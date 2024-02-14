@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.3
+
+### Patch Changes
+
+- 6676819: bump
+
 ## 0.1.2
 
 ### Patch Changes
