@@ -1,5 +1,11 @@
 # @witnesswtf/client
 
+## 0.1.2
+
+### Patch Changes
+
+- b3be52a: initial publish
+
 ## 0.1.13
 
 ### Patch Changes
