@@ -11,7 +11,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/WitnessCo/client"
+		"url": "git+https://github.com/WitnessCo/client.git"
 	},
 	"private": false,
 	"access": "public",
@@ -20,7 +20,11 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"types": "./dist/index.d.ts",
-	"files": ["README.md", "dist", "src"],
+	"files": [
+		"README.md",
+		"dist",
+		"src"
+	],
 	"engines": {
 		"node": ">=18"
 	},
