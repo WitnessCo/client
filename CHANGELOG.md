@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.12
+
+### Patch Changes
+
+- eea32f0: Bumping client timeout duration
+
 ## 0.1.11
 
 ### Patch Changes
