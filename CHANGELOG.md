@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.13
+
+### Patch Changes
+
+- b494928: Cleaner generated docs.
+
 ## 0.1.12
 
 ### Patch Changes
