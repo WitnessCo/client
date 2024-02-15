@@ -45,14 +45,15 @@ const DEFAULT_ETH_RPC_URL =
  * // Instantiate a new client, default params should suffice for now.
  * const witness = new WitnessClient();
  *
- * // Helper method for getting the hash of a string.
+ * // Unique string, so we get an unseen leaf hash.
  * const sampleString = `Check the chain! @ ${Date.now()}`;
+ * // Helper method for getting the hash of a string.
  * const leafHash = witness.hash(sampleString);
  * console.log(`Timestamping leaf ${leafHash}`);
  *
  * // Post the leafHash to the server.
  * await witness.postLeaf(leafHash);
- *
+ * // Use an old leafHash if you don't want to wait for this step.
  * await witness.waitForCheckpointedLeafHash(leafHash);
  * const timestamp = await witness.getTimestampForLeafHash(leafHash);
  * console.log(`Leaf ${leafHash} was timestamped at ${timestamp}`);
