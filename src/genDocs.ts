@@ -29,6 +29,8 @@ async function cleanContents(input: string) {
 	// Here's an example:
 	// Source string: [@witnessco/client](../README.md)
 	// Replacement string: @witnessco/client
-	const output = input.replaceAll(/\[([^\]]+)\]\(\.[^\)]+\)/g, "$1");
+	let output = input.replaceAll(/\[([^\]]+)\]\(\.[^\)]+\)/g, "$1");
+	// Replace "\`0x$\{string}\`" with "`Hash`".
+	output = output.replaceAll(/\\`0x\$\\\{string\}\\`/g, "`Hash`");
 	return output;
 }

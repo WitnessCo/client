@@ -79,7 +79,7 @@ Constructs an instance of `WitnessClient`.
 
 #### Defined in
 
-[src/WitnessClient.ts:88](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L88)
+[src/WitnessClient.ts:88](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L88)
 
 ## Properties
 
@@ -91,13 +91,13 @@ The authentication token to use for requests.
 
 #### Defined in
 
-[src/WitnessClient.ts:89](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L89)
+[src/WitnessClient.ts:89](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L89)
 
 ## Methods
 
 ### getCheckpointByTxHash
 
-▸ **getCheckpointByTxHash**(`txHash`): `Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `string`  }\>
+▸ **getCheckpointByTxHash**(`txHash`): `Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `string`  }\>
 
 Gets a checkpoint by its transaction hash.
 
@@ -105,41 +105,41 @@ Gets a checkpoint by its transaction hash.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `txHash` | \`0x$\{string}\` | The transaction hash of the checkpoint to get. |
+| `txHash` | `Hash` | The transaction hash of the checkpoint to get. |
 
 #### Returns
 
-`Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `string`  }\>
+`Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `string`  }\>
 
 The checkpoint with the specified transaction hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:347](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L347)
+[src/WitnessClient.ts:347](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L347)
 
 ___
 
 ### getCurrentTreeState
 
-▸ **getCurrentTreeState**(): `Promise`\<\{ `checkpointedLeafCount`: `bigint` ; `checkpointedRoot`: \`0x$\{string}\` ; `leafCount`: `bigint` ; `merklizedLeafCount`: `bigint` ; `merklizedRoot`: \`0x$\{string}\` ; `unmerklizedLeafCount`: `bigint`  }\>
+▸ **getCurrentTreeState**(): `Promise`\<\{ `checkpointedLeafCount`: `bigint` ; `checkpointedRoot`: `Hash` ; `leafCount`: `bigint` ; `merklizedLeafCount`: `bigint` ; `merklizedRoot`: `Hash` ; `unmerklizedLeafCount`: `bigint`  }\>
 
 Gets the current tree state.
 
 #### Returns
 
-`Promise`\<\{ `checkpointedLeafCount`: `bigint` ; `checkpointedRoot`: \`0x$\{string}\` ; `leafCount`: `bigint` ; `merklizedLeafCount`: `bigint` ; `merklizedRoot`: \`0x$\{string}\` ; `unmerklizedLeafCount`: `bigint`  }\>
+`Promise`\<\{ `checkpointedLeafCount`: `bigint` ; `checkpointedRoot`: `Hash` ; `leafCount`: `bigint` ; `merklizedLeafCount`: `bigint` ; `merklizedRoot`: `Hash` ; `unmerklizedLeafCount`: `bigint`  }\>
 
 The current tree state.
 
 #### Defined in
 
-[src/WitnessClient.ts:120](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L120)
+[src/WitnessClient.ts:120](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L120)
 
 ___
 
 ### getEarliestCheckpointCoveringLeafIndex
 
-▸ **getEarliestCheckpointCoveringLeafIndex**(`leafIndex`): `Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: \`0x$\{string}\`  }\>
+▸ **getEarliestCheckpointCoveringLeafIndex**(`leafIndex`): `Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 Gets the earliest checkpoint that covers the specified leaf index.
 
@@ -151,31 +151,31 @@ Gets the earliest checkpoint that covers the specified leaf index.
 
 #### Returns
 
-`Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: \`0x$\{string}\`  }\>
+`Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:274](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L274)
+[src/WitnessClient.ts:274](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L274)
 
 ___
 
 ### getLatestOnchainCheckpoint
 
-▸ **getLatestOnchainCheckpoint**(): `Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: \`0x$\{string}\`  }\>
+▸ **getLatestOnchainCheckpoint**(): `Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 Gets the latest onchain checkpoint.
 
 #### Returns
 
-`Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: \`0x$\{string}\`  }\>
+`Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 The latest onchain checkpoint.
 
 #### Defined in
 
-[src/WitnessClient.ts:313](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L313)
+[src/WitnessClient.ts:313](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L313)
 
 ___
 
@@ -189,7 +189,7 @@ Gets the index of a leaf with the specified hash.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The hash of the leaf to search for. |
+| `leafHash` | `Hash` | The hash of the leaf to search for. |
 
 #### Returns
 
@@ -199,13 +199,13 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:256](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L256)
+[src/WitnessClient.ts:256](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L256)
 
 ___
 
 ### getProofForLeafHash
 
-▸ **getProofForLeafHash**(`leafHash`, `targetTreeSize?`): `Promise`\<\{ `leafHash`: \`0x$\{string}\` ; `leafIndex`: `bigint` ; `leftHashes`: \`0x$\{string}\`[] ; `rightHashes`: \`0x$\{string}\`[] ; `targetRootHash`: \`0x$\{string}\`  }\>
+▸ **getProofForLeafHash**(`leafHash`, `targetTreeSize?`): `Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint` ; `leftHashes`: `Hash`[] ; `rightHashes`: `Hash`[] ; `targetRootHash`: `Hash`  }\>
 
 Gets the Merkle proof for a particular leafHash.
 
@@ -213,18 +213,18 @@ Gets the Merkle proof for a particular leafHash.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The hash of the leaf to get the proof for. |
+| `leafHash` | `Hash` | The hash of the leaf to get the proof for. |
 | `targetTreeSize?` | `bigint` | Optional, the tree size to target for the proof. |
 
 #### Returns
 
-`Promise`\<\{ `leafHash`: \`0x$\{string}\` ; `leafIndex`: `bigint` ; `leftHashes`: \`0x$\{string}\`[] ; `rightHashes`: \`0x$\{string}\`[] ; `targetRootHash`: \`0x$\{string}\`  }\>
+`Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint` ; `leftHashes`: `Hash`[] ; `rightHashes`: `Hash`[] ; `targetRootHash`: `Hash`  }\>
 
 The Merkle proof for the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:374](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L374)
+[src/WitnessClient.ts:374](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L374)
 
 ___
 
@@ -238,7 +238,7 @@ Gets the index of a leaf with the specified hash.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The hash of the leaf to search for. |
+| `leafHash` | `Hash` | The hash of the leaf to search for. |
 
 #### Returns
 
@@ -248,13 +248,13 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:238](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L238)
+[src/WitnessClient.ts:238](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L238)
 
 ___
 
 ### hash
 
-▸ **hash**(`str`): \`0x$\{string}\`
+▸ **hash**(`str`): `Hash`
 
 Hashes a string using the keccak256 algorithm.
 
@@ -266,19 +266,19 @@ Hashes a string using the keccak256 algorithm.
 
 #### Returns
 
-\`0x$\{string}\`
+`Hash`
 
 - The resulting hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:460](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L460)
+[src/WitnessClient.ts:460](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L460)
 
 ___
 
 ### postLeaf
 
-▸ **postLeaf**(`leafHash`): `Promise`\<\{ `leafHash`: \`0x$\{string}\` ; `leafIndex`: `bigint`  }\>
+▸ **postLeaf**(`leafHash`): `Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint`  }\>
 
 Posts a leafHash to the server.
 
@@ -286,23 +286,23 @@ Posts a leafHash to the server.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The leafHash to post. |
+| `leafHash` | `Hash` | The leafHash to post. |
 
 #### Returns
 
-`Promise`\<\{ `leafHash`: \`0x$\{string}\` ; `leafIndex`: `bigint`  }\>
+`Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint`  }\>
 
 The index of the posted leafHash.
 
 #### Defined in
 
-[src/WitnessClient.ts:182](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L182)
+[src/WitnessClient.ts:182](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L182)
 
 ___
 
 ### postLeafAndGetProof
 
-▸ **postLeafAndGetProof**(`leafHash`): `Promise`\<\{ `leafHash`: \`0x$\{string}\` ; `leafIndex`: `bigint` ; `leftHashes`: \`0x$\{string}\`[] ; `rightHashes`: \`0x$\{string}\`[] ; `targetRootHash`: \`0x$\{string}\`  }\>
+▸ **postLeafAndGetProof**(`leafHash`): `Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint` ; `leftHashes`: `Hash`[] ; `rightHashes`: `Hash`[] ; `targetRootHash`: `Hash`  }\>
 
 Posts a leaf and waits until it can return with a
 checkpointed proof.
@@ -311,11 +311,11 @@ checkpointed proof.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The leaf to post. |
+| `leafHash` | `Hash` | The leaf to post. |
 
 #### Returns
 
-`Promise`\<\{ `leafHash`: \`0x$\{string}\` ; `leafIndex`: `bigint` ; `leftHashes`: \`0x$\{string}\`[] ; `rightHashes`: \`0x$\{string}\`[] ; `targetRootHash`: \`0x$\{string}\`  }\>
+`Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint` ; `leftHashes`: `Hash`[] ; `rightHashes`: `Hash`[] ; `targetRootHash`: `Hash`  }\>
 
 The proof for the specified leaf.
 
@@ -327,7 +327,7 @@ checkpointed leaf, it may take up to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:207](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L207)
+[src/WitnessClient.ts:207](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L207)
 
 ___
 
@@ -342,7 +342,7 @@ checkpointed timestamp.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The leaf to post. |
+| `leafHash` | `Hash` | The leaf to post. |
 
 #### Returns
 
@@ -359,7 +359,7 @@ to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:226](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L226)
+[src/WitnessClient.ts:226](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L226)
 
 ___
 
@@ -374,11 +374,11 @@ Verifies a Merkle proof for a given leaf against the chain.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `proof` | `Object` | The Merkle proof to verify. |
-| `proof.leafHash` | \`0x$\{string}\` | - |
+| `proof.leafHash` | `Hash` | - |
 | `proof.leafIndex` | `bigint` | - |
-| `proof.leftHashes?` | \`0x$\{string}\`[] | - |
-| `proof.rightHashes?` | \`0x$\{string}\`[] | - |
-| `proof.targetRootHash` | \`0x$\{string}\` | - |
+| `proof.leftHashes?` | `Hash`[] | - |
+| `proof.rightHashes?` | `Hash`[] | - |
+| `proof.targetRootHash` | `Hash` | - |
 
 #### Returns
 
@@ -395,7 +395,7 @@ potential issues such as rate limits.
 
 #### Defined in
 
-[src/WitnessClient.ts:432](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L432)
+[src/WitnessClient.ts:432](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L432)
 
 ___
 
@@ -410,11 +410,11 @@ Verifies a Merkle proof for a given leaf.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `proof` | `Object` | The Merkle proof to verify. |
-| `proof.leafHash` | \`0x$\{string}\` | - |
+| `proof.leafHash` | `Hash` | - |
 | `proof.leafIndex` | `bigint` | - |
-| `proof.leftHashes?` | \`0x$\{string}\`[] | - |
-| `proof.rightHashes?` | \`0x$\{string}\`[] | - |
-| `proof.targetRootHash` | \`0x$\{string}\` | - |
+| `proof.leftHashes?` | `Hash`[] | - |
+| `proof.rightHashes?` | `Hash`[] | - |
+| `proof.targetRootHash` | `Hash` | - |
 
 #### Returns
 
@@ -430,13 +430,13 @@ proof and checkpoint against the corresponding Witness contract on-chain.
 
 #### Defined in
 
-[src/WitnessClient.ts:404](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L404)
+[src/WitnessClient.ts:404](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L404)
 
 ___
 
 ### waitForCheckpointedLeafHash
 
-▸ **waitForCheckpointedLeafHash**(`leafHash`): `Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: \`0x$\{string}\`  }\>
+▸ **waitForCheckpointedLeafHash**(`leafHash`): `Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 Waits for a checkpoint covering the given leaf hash.
 This method will wait up to 15 minutes for a checkpoint to be
@@ -446,14 +446,14 @@ created covering the given leaf, polling at a 5s interval.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `leafHash` | \`0x$\{string}\` | The leaf to wait for. |
+| `leafHash` | `Hash` | The leaf to wait for. |
 
 #### Returns
 
-`Promise`\<\{ `blockHash`: \`0x$\{string}\` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: \`0x$\{string}\` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: \`0x$\{string}\`  }\>
+`Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"finalized"`` \| ``"included"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:152](https://github.com/WitnessCo/client/blob/cd8182c/src/WitnessClient.ts#L152)
+[src/WitnessClient.ts:152](https://github.com/WitnessCo/client/blob/c286679/src/WitnessClient.ts#L152)
