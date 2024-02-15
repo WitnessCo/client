@@ -33,7 +33,7 @@ export const DEFAULT_API_URL = "https://api.witness.co" as const;
 
 // Defaults to Base for onchain stuff.
 const DEFAULT_ETH_RPC_URL =
-	"https://base-mainnet.g.alchemy.com/v2/GpTxZImfKRXK_3TbwxnEaz16_URdRep0" as const;
+	"https://base-mainnet.g.alchemy.com/v2/0EArwrcjeLdLrQ9b-3Nac-dktS4LNMDM" as const;
 
 /**
  * Represents a client for interacting with the Witness server.
@@ -142,8 +142,8 @@ export class WitnessClient {
 
 	/**
 	 * Waits for a checkpoint covering the given leaf hash.
-	 * This method will wait up to 5 minutes for a checkpoint to be
-	 * created covering the given leaf, polling at a 2.5s interval.
+	 * This method will wait up to 15 minutes for a checkpoint to be
+	 * created covering the given leaf, polling at a 5s interval.
 	 *
 	 * @param {Hash} leafHash - The leaf to wait for.
 	 * @returns The earliest checkpoint that covers the specified leaf.
@@ -161,14 +161,14 @@ export class WitnessClient {
 					...restCheckpoint,
 				};
 			}
-			// Timeout if we've been trying for 5 minutes.
-			if (Date.now() - startTime > 5 * 60 * 1000) {
+			// Timeout if we've been trying for 15 minutes.
+			if (Date.now() - startTime > 15 * 60 * 1000) {
 				throw new Error(
 					`Timeout waiting for checkpoint covering leafIndex ${leafIndex}`,
 				);
 			}
-			// Sleep for 2.5 second before trying again.
-			await new Promise((resolve) => setTimeout(resolve, 2500));
+			// Sleep for 5 second before trying again.
+			await new Promise((resolve) => setTimeout(resolve, 5000));
 		}
 	}
 
