@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.14
+
+### Patch Changes
+
+- 81446d5: Adding cjs export to package.json
+
 ## 0.1.13
 
 ### Patch Changes
