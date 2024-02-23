@@ -20,7 +20,7 @@ import { WitnessClient } from '@witnessco/client'
 // Instantiate a new client, default params should suffice for now.
 const witness = new WitnessClient()
 
-// Unique strint, so we get an unseen leafHash.
+// Unique string, so we get an unseen leafHash.
 const sampleString = `Check the chain! @ ${Date.now()}`
 const leafHash = witness.hash(sampleString)
 
