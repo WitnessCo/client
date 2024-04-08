@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.16
+
+### Patch Changes
+
+- 69c3c38: Adding WitnessClient.md export to package.json
+
 ## 0.1.15
 
 ### Patch Changes
