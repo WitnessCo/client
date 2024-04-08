@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.1.15
+
+### Patch Changes
+
+- c8754c1: Adding arbitrum sepolia deployment
+
 ## 0.1.14
 
 ### Patch Changes
