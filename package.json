@@ -30,6 +30,10 @@
 		".": {
 			"require": "./dist/index.cjs",
 			"import": "./dist/index.js"
+		},
+		"./docs/WitnessClient.md": {
+			"require": "./docs/WitnessClient.md",
+			"import": "./docs/WitnessClient.md"
 		}
 	},
 	"engines": {
