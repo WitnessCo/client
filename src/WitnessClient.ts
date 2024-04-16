@@ -35,6 +35,17 @@ export const DEFAULT_API_URL = "https://api.witness.co" as const;
 const DEFAULT_ETH_RPC_URL =
 	"https://base-mainnet.g.alchemy.com/v2/0EArwrcjeLdLrQ9b-3Nac-dktS4LNMDM" as const;
 
+interface CheckpointResponse {
+	chainId: number;
+	txHash: string;
+	status: "pending" | "included" | "finalized";
+	rootHash: string;
+	treeSize: string;
+	blockNumber: string;
+	blockHash: string;
+	timestamp: string;
+}
+
 /**
  * Represents a client for interacting with the Witness server.
  *
@@ -336,6 +347,49 @@ export class WitnessClient {
 			treeSize: BigInt(treeSize),
 			txHash: strToHash(txHash),
 		};
+	}
+
+	/**
+	 * Gets the latest onchain checkpoints for all chains.
+	 *
+	 * @returns The latest onchain checkpoint for all chains.
+	 */
+	public async getLatestCheckpointForAllChains() {
+		const res = await this.client["/getLatestCheckpointForAllChains"].get();
+		if (!res.ok)
+			throw new Error("Error getting latest onchain checkpoint for chains", {
+				cause: await res.json(),
+			});
+
+		const data: Record<string, CheckpointResponse> = await res.json();
+		const transformedData: Record<
+			string,
+			{ [key: string]: string | bigint | Date | number }
+		> = {};
+
+		for (const chainId in data) {
+			const {
+				blockNumber,
+				blockHash,
+				timestamp,
+				rootHash,
+				treeSize,
+				txHash,
+				...rest
+			} = data[chainId];
+
+			transformedData[chainId] = {
+				...rest,
+				blockNumber: BigInt(blockNumber),
+				blockHash: strToHash(blockHash),
+				timestamp: new Date(Number(timestamp) * 1000),
+				rootHash: strToHash(rootHash),
+				treeSize: BigInt(treeSize),
+				txHash: strToHash(txHash),
+			};
+		}
+
+		return transformedData;
 	}
 
 	/**
