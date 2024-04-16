@@ -20,9 +20,9 @@ export default {
 										ts: { type: "number" },
 										date: { type: "string" },
 										human: { type: "string" },
-										fingerprint: { type: "string" },
+										ip: { type: "string" },
 									},
-									required: ["ts", "date", "human", "fingerprint"],
+									required: ["ts", "date", "human", "ip"],
 									additionalProperties: false,
 								},
 							},
@@ -114,6 +114,91 @@ export default {
 									blockHash:
 										"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
 									timestamp: "1698262805",
+								},
+							},
+						},
+					},
+					default: { $ref: "#/components/responses/error" },
+				},
+			},
+		},
+		"/getLatestCheckpointForAllChains": {
+			get: {
+				operationId: "getLatestCheckpointForAllChains",
+				description: "Returns the latest onchain checkpoint for all chains.",
+				tags: ["utility"],
+				parameters: [],
+				responses: {
+					"200": {
+						description: "Successful response",
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									additionalProperties: {
+										type: "object",
+										properties: {
+											txHash: {
+												type: "string",
+												description: "Transaction hash of the checkpoint.",
+											},
+											chainId: {
+												type: "number",
+												description: "Chain ID of the checkpoint.",
+											},
+											status: {
+												type: "string",
+												enum: ["pending", "included", "finalized"],
+											},
+											rootHash: {
+												type: "string",
+												description: "Root hash of the checkpoint.",
+											},
+											treeSize: {
+												type: "string",
+												description: "Tree size of the checkpoint.",
+											},
+											blockNumber: {
+												type: "string",
+												description: "Block number of the checkpoint.",
+											},
+											blockHash: {
+												type: "string",
+												description: "Block hash of the checkpoint.",
+											},
+											timestamp: {
+												type: "string",
+												description:
+													"Timestamp of the checkpoint, expressed in epoch seconds.",
+											},
+										},
+										required: [
+											"txHash",
+											"chainId",
+											"status",
+											"rootHash",
+											"treeSize",
+											"blockNumber",
+											"blockHash",
+											"timestamp",
+										],
+										additionalProperties: false,
+									},
+								},
+								example: {
+									"8453": {
+										txHash:
+											"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
+										chainId: 8453,
+										status: "included",
+										rootHash:
+											"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
+										treeSize: "123456789",
+										blockNumber: "123456789",
+										blockHash:
+											"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
+										timestamp: "1698262805",
+									},
 								},
 							},
 						},
@@ -233,7 +318,7 @@ export default {
 						schema: { type: "string" },
 						description: "Transaction hash of the checkpoint.",
 						example:
-							"0x97e78047a64a1bb484d69e3093ec34d9a0d13f682496bffa492626909df5efd3",
+							"0x2cf28b31b91c4a50e3eb5093a4db60f3a41cd21568f304ff654eafdafc7e88ab",
 					},
 				],
 				responses: {
@@ -544,11 +629,13 @@ export default {
 									leftHashes: {
 										type: "array",
 										items: { type: "string" },
+										maxItems: 256,
 										description: "Left hashes of the proof",
 									},
 									rightHashes: {
 										type: "array",
 										items: { type: "string" },
+										maxItems: 256,
 										description: "Right hashes of the proof",
 									},
 									targetRootHash: {
