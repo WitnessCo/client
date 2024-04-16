@@ -3,6 +3,7 @@ import {
 	arbitrumSepolia,
 	base,
 	baseSepolia,
+	gnosisChiado,
 	mainnet,
 	optimism,
 	optimismSepolia,
@@ -17,6 +18,7 @@ export const supportedChains = [
 	sepolia,
 	optimismSepolia,
 	arbitrumSepolia,
+	gnosisChiado,
 ] as const;
 
 export type SupportedChainType = (typeof supportedChains)[number];
