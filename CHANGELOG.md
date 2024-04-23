@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.3.0
+
+### Minor Changes
+
+- 5a87ad8: Updating api client & config
+
 ## 0.2.0
 
 ### Minor Changes
