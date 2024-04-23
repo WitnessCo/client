@@ -53,6 +53,8 @@ Canonical deployments for `Witness.sol` are available as follows:
 | Sepolia (11155111)          | [0x00000008bcf12Eeb9E4162687D6D251f0F4e7FC2](https://eth-sepolia.blockscout.com/address/0x00000008bcf12Eeb9E4162687D6D251f0F4e7FC2)      |
 | Base Sepolia (84532)        | [0x0000000159C8253802551eEaf8b475db1A50d712](https://base-sepolia.blockscout.com/address/0x0000000159C8253802551eEaf8b475db1A50d712)     |
 | Optimism Sepolia (11155420) | [0x0000000a3fa5CFe56b202F376cCa7334c93aEB8b](https://optimism-sepolia.blockscout.com/address/0x0000000a3fa5CFe56b202F376cCa7334c93aEB8b) |
+| Arbitrum Sepolia (421614)   | [0x00000006399970c8bdad606abD03b1712974E4eA](https://arbiscan.io/address/0x00000006399970c8bdad606abD03b1712974E4eA)                     |
+| Gnosis Chiado (10200)       | [0x000000031C0d9df77F390CED953219E561B67089](https://gnosis-chiado.blockscout.com/address/0x000000031C0d9df77F390CED953219E561B67089)    |
 
 See [the contracts-core repo](https://github.com/witnessco/contracts-core) for more details.
 
