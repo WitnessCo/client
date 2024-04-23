@@ -5,8 +5,8 @@
 	"type": "module",
 	"license": "MIT",
 	"author": {
-		"url": "https://github.com/sinasab",
-		"email": "sinasabet81@gmail.com",
+		"url": "https://github.com/WitnessCo",
+		"email": "sina@witness.co",
 		"name": "Sina Sabet"
 	},
 	"repository": {
@@ -20,12 +20,7 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"README.md",
-		"dist",
-		"docs",
-		"src"
-	],
+	"files": ["README.md", "dist", "docs", "src"],
 	"exports": {
 		".": {
 			"require": "./dist/index.cjs",
@@ -52,10 +47,10 @@
 		"publish-package": "changeset publish"
 	},
 	"dependencies": {
-		"fets": "^0.6.7"
+		"fets": "^0.8.0"
 	},
 	"peerDependencies": {
-		"viem": "^2.4.0"
+		"viem": "^2.9.25"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.5.3",
@@ -67,6 +62,6 @@
 		"typedoc": "^0.25.8",
 		"typedoc-plugin-markdown": "^3.16.0",
 		"typescript": "^5.2.2",
-		"viem": "^2.4.0"
+		"viem": "^2.9.25"
 	}
 }

@@ -1,53 +1,19 @@
-import { type NormalizeOAS, OASClient, createClient } from "fets";
-import {
-	http,
-	Address,
-	Chain,
-	GetContractReturnType,
-	Hash,
-	PublicClient,
-	Transport,
-	createPublicClient,
-	encodePacked,
-	getContract,
-	keccak256,
-} from "viem";
-import {
-	type SupportedChainType,
-	getSupportedChainFromChainId,
-	witnessAbi,
-	witnessDeployments,
-} from "./contracts";
-import type openapi from "./openapi";
+import { type OASClient, createClient } from "fets";
+import { Hash, encodePacked, keccak256 } from "viem";
+import { getContractFromChainConfig } from "./contracts";
+import { defaultChainConfig, defaultServerConfig } from "./defaults";
+import type {
+	ChainConfig,
+	CheckpointResponse,
+	Config,
+	EndpointType,
+	OpenapiConfigType,
+	WitnessContractType,
+} from "./types";
 import { strArrToHash, strToHash } from "./utils";
 
-/** @internal */
-export type OpenapiConfigType = NormalizeOAS<typeof openapi>;
-/** @internal */
-export type EndpointType = OpenapiConfigType["servers"][number]["url"];
-
 /**
- * The default API URL.
- */
-export const DEFAULT_API_URL = "https://api.witness.co" as const;
-
-// Defaults to Base for onchain stuff.
-const DEFAULT_ETH_RPC_URL =
-	"https://base-mainnet.g.alchemy.com/v2/0EArwrcjeLdLrQ9b-3Nac-dktS4LNMDM" as const;
-
-interface CheckpointResponse {
-	chainId: number;
-	txHash: string;
-	status: "pending" | "included" | "finalized";
-	rootHash: string;
-	treeSize: string;
-	blockNumber: string;
-	blockHash: string;
-	timestamp: string;
-}
-
-/**
- * Represents a client for interacting with the Witness server.
+ * Represents a client for interacting with the Witness server and contract.
  *
  * @example
  * ```ts
@@ -75,51 +41,71 @@ interface CheckpointResponse {
  */
 export class WitnessClient {
 	/** @internal */
-	private readonly client: OASClient<OpenapiConfigType>;
+	private readonly client: OASClient<OpenapiConfigType, true>;
 	/** @internal */
-	private readonly chain: Promise<SupportedChainType>;
+	private readonly chainId: number;
 	/** @internal */
-	private readonly contract: Promise<
-		GetContractReturnType<
-			typeof witnessAbi,
-			PublicClient<Transport, Chain>,
-			Address
-		>
-	>;
+	private readonly authToken: string;
+	/** @internal */
+	private contract: WitnessContractType = defaultChainConfig.contract;
 
 	/**
 	 * Constructs an instance of `WitnessClient`.
 	 *
-	 * @param {string} authToken - The authentication token to use for requests.
-	 * @param {string} endpoint - The URL of the Witness server.
-	 * @param {typeof fetch} fetchFn - The fetch function to use for requests.
-	 * @param {string} ethRpc - The URL of the Ethereum RPC endpoint to use.
-	 * 	Implies the chainId used in server calls too.
+	 * An optional authToken can be provided as either the sole argument or as part of a config object:
+	 * ```ts
+	 * const authToken = "my-auth-token";
+	 * new WitnessClient(authToken);
+	 * ```
+	 *
+	 * Full client config customization options are as follows:
+	 *
+	 * ```ts
+	 *  // ChainConfig lets you configure how proofs are verified against a blockchain.
+	 *  type ChainConfig = { ethRpc: string };
+	 *  // ServerConfig lets you configure how the client interacts with the Witness server.
+	 *  type ServerConfig = { authToken: string; chainId: number; endpoint: string; fetchFn: typeof fetch };
+	 *  // All values are optional and can be comfortably omitted.
+	 *  type Config = { chain?: ChainConfig; server?: ServerConfig };
+	 *  // WitnessClient can be instantiated with an optional config object.
+	 *  // Example usage (populate with your config values).
+	 *  const chain = { ethRpc: "my-rpc-url.com/" };
+	 *  const server = { authToken: "my-auth-token", chainId: 1 }
+	 *  const myConfig: Config = { chain: chainConfig, server: serverConfig };
+	 *  new WitnessClient(myConfig);
+	 * ```
+	 *
+	 * @param {string | Config | undefined} [config={}] - Optional config entailing either just an auth token or a richer server & chain configurations for the client.
+	 * @param {ServerConfig | undefined} [config.server] - Optional server configuration.
+	 * @param {string | undefined} [config.server.authToken] - Optional authentication token.
+	 * @param {number | undefined} [config.server.chainId] - Optional chain ID.
+	 * @param {string | undefined} [config.server.endpoint] - Optional API URL.
+	 * @param {typeof fetch | undefined} [config.server.fetchFn] - Optional fetch function.
+	 * @param {ChainConfig | undefined} [config.chain] - Optional chain configuration.
+	 * @param {string | undefined} [config.chain.ethRpc] - Optional Ethereum RPC endpoint.
 	 */
-	constructor(
-		private readonly authToken: string = "",
-		endpoint: EndpointType = DEFAULT_API_URL,
-		fetchFn: typeof fetch = fetch,
-		ethRpc: string = DEFAULT_ETH_RPC_URL,
-	) {
-		this.client = createClient<OpenapiConfigType>({ endpoint, fetchFn });
-		// Initialize contract instance.
-		const transport = http(ethRpc);
-		const tmpClient = createPublicClient({ transport });
-		this.chain = (async () => {
-			const maybeChainId = await tmpClient.getChainId();
-			return getSupportedChainFromChainId(maybeChainId);
-		})();
-		this.contract = this.chain.then((chain) => {
-			const client = createPublicClient({
-				chain,
-				transport,
+	constructor(config: string | Config = "") {
+		const normalizedConfig: Config =
+			typeof config === "string" ? { server: { authToken: config } } : config;
+		const { chain, server } = normalizedConfig;
+		// Setup chain config if present.
+		if (chain) {
+			getContractFromChainConfig(chain).then((contract) => {
+				this.contract = contract;
 			});
-			return getContract({
-				client,
-				address: witnessDeployments[chain.id],
-				abi: witnessAbi,
-			});
+		}
+
+		// Set up server config.
+		const { authToken, chainId, endpoint, fetchFn } = {
+			...defaultServerConfig,
+			...server,
+		};
+		this.authToken = authToken;
+		this.chainId = chainId;
+		this.client = createClient<OpenapiConfigType>({
+			endpoint: endpoint as EndpointType,
+			fetchFn,
+			globalParams: { headers: { Authorization: `Bearer ${authToken}` } },
 		});
 	}
 
@@ -158,14 +144,18 @@ export class WitnessClient {
 	 * created covering the given leaf, polling at a 5s interval.
 	 *
 	 * @param {Hash} leafHash - The leaf to wait for.
+	 * @param {number} chainId - Optional, the chain ID to query for.
 	 * @returns The earliest checkpoint that covers the specified leaf.
 	 */
-	public async waitForCheckpointedLeafHash(leafHash: Hash) {
+	public async waitForCheckpointedLeafHash(
+		leafHash: Hash,
+		chainId: number = this.chainId,
+	) {
 		const startTime = Date.now();
 		const leafIndex = await this.getLeafIndexForHash(leafHash);
 		while (true) {
 			const { treeSize: treeSizeStr, ...restCheckpoint } =
-				await this.getLatestOnchainCheckpoint();
+				await this.getLatestOnchainCheckpoint(chainId);
 			const treeSize = BigInt(treeSizeStr);
 			if (treeSize > leafIndex) {
 				return {
@@ -187,7 +177,7 @@ export class WitnessClient {
 	/**
 	 * Posts a leafHash to the server.
 	 *
-	 * @param leafHash - The leafHash to post.
+	 * @param {Hash} leafHash - The leafHash to post.
 	 * @returns The index of the posted leafHash.
 	 */
 	public async postLeaf(leafHash: Hash) {
@@ -213,12 +203,19 @@ export class WitnessClient {
 	 * checkpointed leaf, it may take up to a few minutes to return.
 	 *
 	 * @param {Hash} leafHash - The leaf to post.
+	 * @param {number} chainId - Optional, the chain ID to get a proof for.
 	 * @returns The proof for the specified leaf.
 	 */
-	public async postLeafAndGetProof(leafHash: Hash) {
+	public async postLeafAndGetProof(
+		leafHash: Hash,
+		chainId: number = this.chainId,
+	) {
 		await this.postLeaf(leafHash);
-		const { treeSize } = await this.waitForCheckpointedLeafHash(leafHash);
-		return this.getProofForLeafHash(leafHash, treeSize);
+		const { treeSize } = await this.waitForCheckpointedLeafHash(
+			leafHash,
+			chainId,
+		);
+		return this.getProofForLeafHash(leafHash, { targetTreeSize: treeSize });
 	}
 
 	/**
@@ -232,23 +229,31 @@ export class WitnessClient {
 	 * to a few minutes to return.
 	 *
 	 * @param {Hash} leafHash - The leaf to post.
+	 * @param {number} chainId - Optional, the chain ID to get a timestamp for.
 	 * @returns The timestamp for the specified leaf.
 	 */
-	public async postLeafAndGetTimestamp(leafHash: Hash) {
+	public async postLeafAndGetTimestamp(
+		leafHash: Hash,
+		chainId: number = this.chainId,
+	) {
 		await this.postLeaf(leafHash);
-		await this.waitForCheckpointedLeafHash(leafHash);
-		return this.getTimestampForLeafHash(leafHash);
+		await this.waitForCheckpointedLeafHash(leafHash, chainId);
+		return this.getTimestampForLeafHash(leafHash, chainId);
 	}
 
 	/**
 	 * Gets the index of a leaf with the specified hash.
 	 *
-	 * @param leafHash - The hash of the leaf to search for.
+	 * @param {Hash} leafHash - The hash of the leaf to search for.
+	 * @param {number} chainId - Optional, the chain ID to get a timestamp for.
 	 * @returns The index of the leaf with the specified hash.
 	 */
-	public async getTimestampForLeafHash(leafHash: Hash) {
+	public async getTimestampForLeafHash(
+		leafHash: Hash,
+		chainId: number = this.chainId,
+	) {
 		const res = await this.client["/getTimestampByLeafHash"].get({
-			query: { leafHash, chainId: (await this.chain).id },
+			query: { leafHash, chainId },
 		});
 		if (!res.ok)
 			throw new Error(`Error getting timestamp for leafhash ${leafHash}`, {
@@ -261,7 +266,7 @@ export class WitnessClient {
 	/**
 	 * Gets the index of a leaf with the specified hash.
 	 *
-	 * @param leafHash - The hash of the leaf to search for.
+	 * @param {Hash} leafHash - The hash of the leaf to search for.
 	 * @returns The index of the leaf with the specified hash.
 	 */
 	public async getLeafIndexForHash(leafHash: Hash) {
@@ -279,15 +284,19 @@ export class WitnessClient {
 	/**
 	 * Gets the earliest checkpoint that covers the specified leaf index.
 	 *
-	 * @param leafIndex - The index of the leaf to search for.
+	 * @param {bigint} leafIndex - The index of the leaf to search for.
+	 * @param {number} chainId - Optional, the chain ID to search on.
 	 * @returns The earliest checkpoint that covers the specified leaf.
 	 */
-	public async getEarliestCheckpointCoveringLeafIndex(leafIndex: bigint) {
+	public async getEarliestCheckpointCoveringLeafIndex(
+		leafIndex: bigint,
+		chainId: number = this.chainId,
+	) {
 		const res = await this.client[
 			"/getEarliestCheckpointCoveringLeafIndex"
 		].get({
 			query: {
-				chainId: (await this.chain).id,
+				chainId,
 				leafIndex: leafIndex.toString(),
 			},
 		});
@@ -319,11 +328,12 @@ export class WitnessClient {
 	/**
 	 * Gets the latest onchain checkpoint.
 	 *
+	 * @param chainId - Optional, the chain ID to get the latest checkpoint for.
 	 * @returns The latest onchain checkpoint.
 	 */
-	public async getLatestOnchainCheckpoint() {
+	public async getLatestOnchainCheckpoint(chainId = this.chainId) {
 		const res = await this.client["/getLatestCheckpoint"].get({
-			query: { chainId: (await this.chain).id },
+			query: { chainId },
 		});
 		if (!res.ok)
 			throw new Error("Error getting latest onchain checkpoint", {
@@ -395,7 +405,7 @@ export class WitnessClient {
 	/**
 	 * Gets a checkpoint by its transaction hash.
 	 *
-	 * @param txHash - The transaction hash of the checkpoint to get.
+	 * @param {Hash} txHash - The transaction hash of the checkpoint to get.
 	 * @returns The checkpoint with the specified transaction hash.
 	 */
 	public async getCheckpointByTxHash(txHash: Hash) {
@@ -421,13 +431,27 @@ export class WitnessClient {
 	/**
 	 * Gets the Merkle proof for a particular leafHash.
 	 *
-	 * @param leafHash - The hash of the leaf to get the proof for.
-	 * @param targetTreeSize - Optional, the tree size to target for the proof.
+	 * @param {Hash} leafHash - The hash of the leaf to get the proof for.
+	 * @param {Object} [options={}] - The options object.
+	 * @param {number} [options.chainId=this.chainId] - Optional. The chain ID to target for the proof.
+	 *     If not provided and `targetTreeSize` is not set, the latest checkpoint for this chainId will be targeted.
+	 * @param {bigint} [options.targetTreeSize] - Optional. The tree size to target for the proof.
+	 *     This takes precedence over `chainId`.
 	 * @returns The Merkle proof for the specified leaf.
 	 */
-	public async getProofForLeafHash(leafHash: Hash, targetTreeSize?: bigint) {
+	public async getProofForLeafHash(
+		leafHash: Hash,
+		{
+			targetTreeSize,
+			chainId = this.chainId,
+		}: { chainId?: number; targetTreeSize?: bigint } = {},
+	) {
 		const res = await this.client["/getProofForLeafHash"].get({
-			query: { leafHash, targetTreeSize: targetTreeSize?.toString() },
+			query: {
+				leafHash,
+				chainId,
+				targetTreeSize: targetTreeSize?.toString(),
+			},
 		});
 		if (!res.ok)
 			throw new Error(`Error getting proof for leafHash ${leafHash}`, {
@@ -468,7 +492,8 @@ export class WitnessClient {
 		});
 		if (!res.ok)
 			throw new Error("Error verifying proof", { cause: await res.json() });
-		return res.json();
+		const { success } = await res.json();
+		return success;
 	}
 
 	/**
@@ -481,16 +506,22 @@ export class WitnessClient {
 	 * potential issues such as rate limits.
 	 *
 	 * @param proof - The Merkle proof to verify.
+	 * @param config - Optional, the chain configuration to use for verification.
 	 * @returns A boolean indicating whether the proof is valid.
 	 */
-	public async verifyProofChain(proof: {
-		leftHashes?: Hash[];
-		rightHashes?: Hash[];
-		leafHash: Hash;
-		leafIndex: bigint;
-		targetRootHash: Hash;
-	}) {
-		const contract = await this.contract;
+	public async verifyProofChain(
+		proof: {
+			leftHashes?: Hash[];
+			rightHashes?: Hash[];
+			leafHash: Hash;
+			leafIndex: bigint;
+			targetRootHash: Hash;
+		},
+		config?: ChainConfig,
+	) {
+		const contract = config
+			? await getContractFromChainConfig(config)
+			: this.contract;
 		const { leafIndex, leafHash, leftHashes, rightHashes, targetRootHash } =
 			proof;
 		const res = await contract.read.safeVerifyProof([
