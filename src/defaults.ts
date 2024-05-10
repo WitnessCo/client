@@ -21,7 +21,7 @@ const client = createPublicClient({
 });
 const contract: WitnessContractType = getContract({
 	client,
-	address: witnessDeployments[base.id],
+	address: witnessDeployments[base.id].address,
 	abi: witnessAbi,
 });
 

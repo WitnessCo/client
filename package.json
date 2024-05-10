@@ -41,7 +41,9 @@
 	},
 	"scripts": {
 		"clean": "rm -rf node_modules dist docs",
-		"format": "biome check --apply src",
+		"format": "biome format src --write",
+		"lint": "biome check src",
+		"lint:fix": "biome check src --apply",
 		"ci": "biome ci src",
 		"typecheck": "tsc --noEmit",
 		"build": "tsup src/index.ts --format cjs,esm --dts --minify",

@@ -58,7 +58,7 @@ export async function getContractFromChainConfig(
 	if (publicClient) {
 		return getContract({
 			client: publicClient,
-			address: witnessDeployments[publicClient.chain.id],
+			address: witnessDeployments[publicClient.chain.id].address,
 			abi: witnessAbi,
 		});
 	}
@@ -70,7 +70,7 @@ export async function getContractFromChainConfig(
 	const client = createPublicClient({ chain, transport });
 	return getContract({
 		client,
-		address: witnessDeployments[chain.id],
+		address: witnessDeployments[chain.id].address,
 		abi: witnessAbi,
 	});
 }
