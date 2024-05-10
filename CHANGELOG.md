@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.3.1
+
+### Patch Changes
+
+- 9ada67d: Adding startBlock to deployment exports
+
 ## 0.3.0
 
 ### Minor Changes
