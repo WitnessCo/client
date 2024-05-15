@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.4.0
+
+### Minor Changes
+
+- 41879d7: Migrated internal workings from fets to kubb
+
 ## 0.3.1
 
 ### Patch Changes
