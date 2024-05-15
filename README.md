@@ -64,6 +64,6 @@ See [docs.witness.co](https://docs.witness.co) for more background on Witness, o
 
 ## Built With
 
-- [Bun](https://bun.sh)
-- [feTS](https://github.com/ardatan/feTS)
+- [bun](https://bun.sh)
+- [kubb](https://www.kubb.dev/)
 - [viem](https://github.com/wevm/viem)

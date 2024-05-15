@@ -17,8 +17,9 @@ import {
 	optimismSepolia,
 	sepolia,
 } from "viem/chains";
-import { witnessAbi, witnessDeployments } from ".";
-import { ChainConfig } from "../types";
+import type { ChainConfig } from "../types/config";
+import { witness as witnessAbi } from "./abis";
+import { witnessDeployments } from "./deployments";
 
 export const supportedChains = [
 	base,

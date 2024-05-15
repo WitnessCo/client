@@ -20,12 +20,7 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"README.md",
-		"dist",
-		"docs",
-		"src"
-	],
+	"files": ["README.md", "dist", "docs", "src"],
 	"exports": {
 		".": {
 			"require": "./dist/index.cjs",
@@ -54,9 +49,10 @@
 		"publish-package": "changeset publish"
 	},
 	"dependencies": {
-		"fets": "^0.8.0"
+		"@kubb/oas": "^2.18.7"
 	},
 	"peerDependencies": {
+		"axios": "^1.6.8",
 		"viem": "^2.9.25"
 	},
 	"devDependencies": {
