@@ -1,14 +1,17 @@
 import { http, createPublicClient, getContract } from "viem";
 import { base } from "viem/chains";
 import { witnessAbi, witnessDeployments } from "./contracts";
-import type { ChainConfig, ServerConfig, WitnessContractType } from "./types";
+import type {
+	ChainConfig,
+	ServerConfig,
+	WitnessContractType,
+} from "./types/config";
 
 export const DEFAULT_API_URL = "https://api.witness.co" as const;
 export const defaultServerConfig = {
 	authToken: "",
 	chainId: base.id,
 	endpoint: DEFAULT_API_URL,
-	fetchFn: fetch,
 } as const satisfies ServerConfig;
 
 // Defaults to Base for onchain stuff.

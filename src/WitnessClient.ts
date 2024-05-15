@@ -1,15 +1,29 @@
-import { type OASClient, createClient } from "fets";
 import { Hash, encodePacked, keccak256 } from "viem";
 import { getContractFromChainConfig } from "./contracts";
 import { defaultChainConfig, defaultServerConfig } from "./defaults";
+import { createAxiosClient } from "./requestClient";
 import type {
-	ChainConfig,
-	CheckpointResponse,
-	Config,
 	EndpointType,
-	OpenapiConfigType,
-	WitnessContractType,
-} from "./types";
+	GetCheckpointByTransactionHashRequest,
+	GetCheckpointByTransactionHashResponse,
+	GetEarliestCheckpointCoveringLeafIndexRequest,
+	GetEarliestCheckpointCoveringLeafIndexResponse,
+	GetLatestCheckpointForAllChainsResponse,
+	GetLatestCheckpointRequest,
+	GetLatestCheckpointResponse,
+	GetLeafIndexByHashRequest,
+	GetLeafIndexByHashResponse,
+	GetProofForLeafHashRequest,
+	GetProofForLeafHashResponse,
+	GetTimestampForLeafHashRequest,
+	GetTimestampForLeafHashResponse,
+	GetTreeStateResponse,
+	PostLeafRequest,
+	PostLeafResponse,
+	PostProofRequest,
+	PostProofResponse,
+} from "./types/api";
+import type { ChainConfig, Config, WitnessContractType } from "./types/config";
 import { strArrToHash, strToHash } from "./utils";
 
 /**
@@ -41,11 +55,9 @@ import { strArrToHash, strToHash } from "./utils";
  */
 export class WitnessClient {
 	/** @internal */
-	private readonly client: OASClient<OpenapiConfigType, true>;
+	private readonly client: ReturnType<typeof createAxiosClient>;
 	/** @internal */
 	private readonly chainId: number;
-	/** @internal */
-	private readonly authToken: string;
 	/** @internal */
 	private contract: WitnessContractType = defaultChainConfig.contract;
 
@@ -80,7 +92,6 @@ export class WitnessClient {
 	 * @param {string | undefined} [config.server.authToken] - Optional authentication token.
 	 * @param {number | undefined} [config.server.chainId] - Optional chain ID.
 	 * @param {string | undefined} [config.server.endpoint] - Optional API URL.
-	 * @param {typeof fetch | undefined} [config.server.fetchFn] - Optional fetch function.
 	 * @param {ChainConfig | undefined} [config.chain] - Optional chain configuration.
 	 * @param {string | undefined} [config.chain.ethRpc] - Optional Ethereum RPC endpoint.
 	 */
@@ -96,17 +107,12 @@ export class WitnessClient {
 		}
 
 		// Set up server config.
-		const { authToken, chainId, endpoint, fetchFn } = {
+		const { authToken, chainId, endpoint } = {
 			...defaultServerConfig,
 			...server,
 		};
-		this.authToken = authToken;
 		this.chainId = chainId;
-		this.client = createClient<OpenapiConfigType>({
-			endpoint: endpoint as EndpointType,
-			fetchFn,
-			globalParams: { headers: { Authorization: `Bearer ${authToken}` } },
-		});
+		this.client = createAxiosClient(endpoint as EndpointType, authToken);
 	}
 
 	/**
@@ -115,11 +121,11 @@ export class WitnessClient {
 	 * @returns The current tree state.
 	 */
 	public async getCurrentTreeState() {
-		const res = await this.client["/getTreeState"].get();
-		if (!res.ok)
-			throw new Error("Error getting current tree state", {
-				cause: await res.json(),
-			});
+		const res = await this.client<GetTreeStateResponse>({
+			method: "get",
+			url: "/getTreeState",
+			params: {},
+		});
 		const {
 			leafCount,
 			merklizedRoot,
@@ -127,7 +133,7 @@ export class WitnessClient {
 			unmerklizedLeafCount,
 			checkpointedRoot,
 			checkpointedLeafCount,
-		} = await res.json();
+		} = res.data;
 		return {
 			leafCount: BigInt(leafCount),
 			merklizedRoot: strToHash(merklizedRoot),
@@ -181,16 +187,12 @@ export class WitnessClient {
 	 * @returns The index of the posted leafHash.
 	 */
 	public async postLeaf(leafHash: Hash) {
-		const res = await this.client["/postLeafHash"].post({
-			json: { leafHash },
-			headers: { Authorization: `Bearer ${this.authToken}` },
+		const res = await this.client<PostLeafResponse, PostLeafRequest>({
+			method: "post",
+			url: "/postLeafHash",
+			data: { leafHash },
 		});
-		if (!res.ok)
-			throw new Error(`Error inserting leafHash ${leafHash}`, {
-				cause: await res.json(),
-			});
-		const { leafIndex } = await res.json();
-		return { leafHash, leafIndex: BigInt(leafIndex) };
+		return { leafHash, leafIndex: BigInt(res.data.leafIndex) };
 	}
 
 	/**
@@ -252,15 +254,15 @@ export class WitnessClient {
 		leafHash: Hash,
 		chainId: number = this.chainId,
 	) {
-		const res = await this.client["/getTimestampByLeafHash"].get({
-			query: { leafHash, chainId },
+		const res = await this.client<
+			GetTimestampForLeafHashResponse,
+			GetTimestampForLeafHashRequest
+		>({
+			method: "get",
+			url: "/getTimestampByLeafHash",
+			params: { leafHash, chainId },
 		});
-		if (!res.ok)
-			throw new Error(`Error getting timestamp for leafhash ${leafHash}`, {
-				cause: await res.json(),
-			});
-		const { timestamp } = await res.json();
-		return new Date(Number(timestamp) * 1000);
+		return new Date(Number(res.data.timestamp) * 1000);
 	}
 
 	/**
@@ -270,15 +272,15 @@ export class WitnessClient {
 	 * @returns The index of the leaf with the specified hash.
 	 */
 	public async getLeafIndexForHash(leafHash: Hash) {
-		const res = await this.client["/getLeafIndexByHash"].get({
-			query: { leafHash },
+		const res = await this.client<
+			GetLeafIndexByHashResponse,
+			GetLeafIndexByHashRequest
+		>({
+			method: "get",
+			url: "/getLeafIndexByHash",
+			params: { leafHash },
 		});
-		if (!res.ok)
-			throw new Error(`Error getting leafIndex for hash ${leafHash}`, {
-				cause: await res.json(),
-			});
-		const { leafIndex } = await res.json();
-		return BigInt(leafIndex);
+		return BigInt(res.data.leafIndex);
 	}
 
 	/**
@@ -292,19 +294,14 @@ export class WitnessClient {
 		leafIndex: bigint,
 		chainId: number = this.chainId,
 	) {
-		const res = await this.client[
-			"/getEarliestCheckpointCoveringLeafIndex"
-		].get({
-			query: {
-				chainId,
-				leafIndex: leafIndex.toString(),
-			},
+		const res = await this.client<
+			GetEarliestCheckpointCoveringLeafIndexResponse,
+			GetEarliestCheckpointCoveringLeafIndexRequest
+		>({
+			method: "get",
+			url: "/getEarliestCheckpointCoveringLeafIndex",
+			params: { chainId, leafIndex: leafIndex.toString() },
 		});
-		if (!res.ok)
-			throw new Error(
-				`Error getting checkpoint covering leafIndex ${leafIndex}`,
-				{ cause: await res.json() },
-			);
 		const {
 			blockNumber,
 			blockHash,
@@ -313,7 +310,7 @@ export class WitnessClient {
 			treeSize,
 			txHash,
 			...rest
-		} = await res.json();
+		} = res.data;
 		return {
 			...rest,
 			blockNumber: BigInt(blockNumber),
@@ -332,13 +329,14 @@ export class WitnessClient {
 	 * @returns The latest onchain checkpoint.
 	 */
 	public async getLatestOnchainCheckpoint(chainId = this.chainId) {
-		const res = await this.client["/getLatestCheckpoint"].get({
-			query: { chainId },
+		const res = await this.client<
+			GetLatestCheckpointResponse,
+			GetLatestCheckpointRequest
+		>({
+			method: "get",
+			url: "/getLatestCheckpoint",
+			params: { chainId },
 		});
-		if (!res.ok)
-			throw new Error("Error getting latest onchain checkpoint", {
-				cause: await res.json(),
-			});
 		const {
 			blockNumber,
 			blockHash,
@@ -347,7 +345,7 @@ export class WitnessClient {
 			treeSize,
 			txHash,
 			...rest
-		} = await res.json();
+		} = res.data;
 		return {
 			...rest,
 			blockNumber: BigInt(blockNumber),
@@ -365,13 +363,13 @@ export class WitnessClient {
 	 * @returns The latest onchain checkpoint for all chains.
 	 */
 	public async getLatestCheckpointForAllChains() {
-		const res = await this.client["/getLatestCheckpointForAllChains"].get();
-		if (!res.ok)
-			throw new Error("Error getting latest onchain checkpoint for chains", {
-				cause: await res.json(),
-			});
+		const res = await this.client<GetLatestCheckpointForAllChainsResponse>({
+			method: "get",
+			url: "/getLatestCheckpointForAllChains",
+			params: {},
+		});
 
-		const data: Record<string, CheckpointResponse> = await res.json();
+		const data = res.data;
 		const transformedData: Record<
 			string,
 			{ [key: string]: string | bigint | Date | number }
@@ -409,15 +407,16 @@ export class WitnessClient {
 	 * @returns The checkpoint with the specified transaction hash.
 	 */
 	public async getCheckpointByTxHash(txHash: Hash) {
-		const res = await this.client["/getCheckpointByTransactionHash"].get({
-			query: { txHash },
+		const res = await this.client<
+			GetCheckpointByTransactionHashResponse,
+			GetCheckpointByTransactionHashRequest
+		>({
+			method: "get",
+			url: "/getCheckpointByTransactionHash",
+			params: { txHash },
 		});
-		if (!res.ok)
-			throw new Error(`Error getting checkpoint for txHash ${txHash}`, {
-				cause: await res.json(),
-			});
 		const { blockNumber, blockHash, timestamp, rootHash, treeSize, ...rest } =
-			await res.json();
+			res.data;
 		return {
 			...rest,
 			blockNumber: BigInt(blockNumber),
@@ -446,19 +445,19 @@ export class WitnessClient {
 			chainId = this.chainId,
 		}: { chainId?: number; targetTreeSize?: bigint } = {},
 	) {
-		const res = await this.client["/getProofForLeafHash"].get({
-			query: {
+		const res = await this.client<
+			GetProofForLeafHashResponse,
+			GetProofForLeafHashRequest
+		>({
+			method: "get",
+			url: "/getProofForLeafHash",
+			params: {
 				leafHash,
 				chainId,
 				targetTreeSize: targetTreeSize?.toString(),
 			},
 		});
-		if (!res.ok)
-			throw new Error(`Error getting proof for leafHash ${leafHash}`, {
-				cause: await res.json(),
-			});
-		const { leafIndex, leftHashes, rightHashes, targetRootHash } =
-			await res.json();
+		const { leafIndex, leftHashes, rightHashes, targetRootHash } = res.data;
 		return {
 			leafIndex: BigInt(leafIndex),
 			leafHash,
@@ -487,13 +486,12 @@ export class WitnessClient {
 		targetRootHash: Hash;
 	}) {
 		const { leafIndex, ...restOfProof } = proof;
-		const res = await this.client["/postProof"].post({
-			json: { leafIndex: leafIndex.toString(), ...restOfProof },
+		const res = await this.client<PostProofResponse, PostProofRequest>({
+			method: "post",
+			url: "/postProof",
+			data: { leafIndex: leafIndex.toString(), ...restOfProof },
 		});
-		if (!res.ok)
-			throw new Error("Error verifying proof", { cause: await res.json() });
-		const { success } = await res.json();
-		return success;
+		return res.data.success;
 	}
 
 	/**
