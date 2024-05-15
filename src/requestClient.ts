@@ -1,6 +1,7 @@
 // Modified from https://github.com/kubb-labs/kubb/blob/main/packages/swagger-client/client.ts.
 import axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axiosRetry from "axios-retry";
 import type { EndpointType } from "./types/api";
 
 /**
@@ -51,6 +52,10 @@ export const createAxiosClient = (
 	const authHeader = authToken ? { Authorization: `Bearer ${authToken}` } : {};
 	const headers = { "User-Agent": "WitnessCo/Client", ...authHeader };
 	const axiosInstance = axios.create({ baseURL, headers });
+	axiosRetry(axiosInstance, {
+		retryCondition: () => true,
+		retryDelay: axiosRetry.exponentialDelay,
+	});
 
 	async function makeRequest<
 		TResponseData,

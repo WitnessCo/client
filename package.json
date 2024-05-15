@@ -54,10 +54,11 @@
 		"publish-package": "changeset publish"
 	},
 	"dependencies": {
-		"@kubb/oas": "^2.18.7"
+		"@kubb/oas": "^2.18.7",
+		"axios": "^1.6.8",
+		"axios-retry": "^4.2.0"
 	},
 	"peerDependencies": {
-		"axios": "^1.6.8",
 		"viem": "^2.9.25"
 	},
 	"devDependencies": {
