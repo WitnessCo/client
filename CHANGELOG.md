@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.4.1
+
+### Patch Changes
+
+- 4202378: Added axios-retry
+
 ## 0.4.0
 
 ### Minor Changes
