@@ -64,6 +64,8 @@ See [docs.witness.co](https://docs.witness.co) for more background on Witness, o
 
 ## Built With
 
+- [axios](https://github.com/axios/axios)
+- [axios-retry](https://github.com/softonic/axios-retry)
 - [bun](https://bun.sh)
 - [kubb](https://www.kubb.dev/)
 - [viem](https://github.com/wevm/viem)
