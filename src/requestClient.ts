@@ -53,6 +53,8 @@ export const createAxiosClient = (
 	const headers = { "User-Agent": "WitnessCo/Client", ...authHeader };
 	const axiosInstance = axios.create({ baseURL, headers });
 	axiosRetry(axiosInstance, {
+		// Retry all failed requests; typically POST requests are not idempotent and skipped,
+		// but in this case we want to retry them.
 		retryCondition: () => true,
 		retryDelay: axiosRetry.exponentialDelay,
 	});
