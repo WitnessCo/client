@@ -17,15 +17,10 @@
 	"access": "public",
 	"homepage": "https://github.com/WitnessCo/client",
 	"bugs": "https://github.com/WitnessCo/client/issues",
-	"main": "./dist/index.js",
-	"typings": "./dist/index.d.ts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"README.md",
-		"dist",
-		"docs",
-		"src"
-	],
+	"files": ["README.md", "dist", "docs", "src"],
 	"exports": {
 		".": {
 			"require": "./dist/index.cjs",
@@ -34,7 +29,8 @@
 		"./docs/WitnessClient.md": {
 			"require": "./docs/WitnessClient.md",
 			"import": "./docs/WitnessClient.md"
-		}
+		},
+		"./package.json": "./package.json"
 	},
 	"engines": {
 		"node": ">=18"
@@ -46,17 +42,15 @@
 		"lint:fix": "biome check src --apply",
 		"ci": "biome ci src",
 		"typecheck": "tsc --noEmit",
-		"build": "tsup src/index.ts --format cjs,esm --dts --minify",
-		"generate:openapi": "tsx src/fetchOpenapi.ts",
+		"build": "tsup",
+		"generate:openapi": "tsx src/scripts/fetchOpenapi.ts",
 		"example": "tsx watch ./src/example.ts",
-		"dev": "tsup src/index.ts --format cjs,esm --dts --minify --watch",
-		"generate:docs": "tsx src/genDocs.ts",
+		"dev": "tsup --watch",
+		"generate:docs": "bun run src/scripts/genDocs.ts",
 		"publish-package": "changeset publish"
 	},
 	"dependencies": {
-		"@kubb/oas": "^2.18.7",
-		"axios": "^1.6.8",
-		"axios-retry": "^4.2.0"
+		"@kubb/oas": "^2.18.7"
 	},
 	"peerDependencies": {
 		"viem": "^2.9.25"
@@ -66,7 +60,7 @@
 		"@changesets/cli": "^2.27.1",
 		"@types/fs-extra": "^11.0.4",
 		"fs-extra": "^11.2.0",
-		"tsup": "^7.2.0",
+		"tsup": "^8.0.2",
 		"tsx": "^4.7.1",
 		"typedoc": "^0.25.8",
 		"typedoc-plugin-markdown": "^3.16.0",

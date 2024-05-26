@@ -5,9 +5,32 @@ import type {
 	PublicClient,
 	Transport,
 } from "viem";
-import type { witness } from "../contracts/abis";
-import type { SupportedChainType } from "../contracts/utils";
-import type { EndpointType } from "./api";
+import {
+	arbitrumSepolia,
+	base,
+	baseSepolia,
+	gnosisChiado,
+	mainnet,
+	optimism,
+	optimismSepolia,
+	sepolia,
+} from "viem/chains";
+import type { witness } from "../contracts/abis.js";
+import type { EndpointType } from "./api.js";
+
+export const supportedChains = [
+	base,
+	mainnet,
+	optimism,
+	baseSepolia,
+	sepolia,
+	optimismSepolia,
+	arbitrumSepolia,
+	gnosisChiado,
+] as const;
+
+export type SupportedChainType = (typeof supportedChains)[number];
+export type SupportedChainIdType = SupportedChainType["id"];
 
 /**
  * Configuration options for the server.

@@ -61,6 +61,12 @@ console.log(`Leaf ${leafHash} was timestamped at ${timestamp}`);
 
 Constructs an instance of `WitnessClient`.
 
+An optional authToken can be provided as either the sole argument or as part of a config object:
+```ts
+const authToken = "my-auth-token";
+new WitnessClient(authToken);
+```
+
 Full client config customization options are as follows:
 
 ```ts
@@ -80,11 +86,9 @@ Full client config customization options are as follows:
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `config?` | `Object` | Optional server & chain configurations for the client. |
-| `config.chain?` | `ChainConfig` | Optional chain configuration. |
-| `config.server?` | `ServerConfig` | Optional server configuration. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `config?` | `string` \| `Config` | `""` | Optional config entailing either just an auth token or a richer server & chain configurations for the client. |
 
 #### Returns
 
@@ -92,7 +96,7 @@ Full client config customization options are as follows:
 
 #### Defined in
 
-[src/WitnessClient.ts:81](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L81)
+[src/WitnessClient.ts:102](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L102)
 
 ## Methods
 
@@ -116,7 +120,7 @@ The checkpoint with the specified transaction hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:403](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L403)
+[src/WitnessClient.ts:408](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L408)
 
 ___
 
@@ -134,7 +138,7 @@ The current tree state.
 
 #### Defined in
 
-[src/WitnessClient.ts:109](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L109)
+[src/WitnessClient.ts:127](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L127)
 
 ___
 
@@ -159,7 +163,7 @@ The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:283](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L283)
+[src/WitnessClient.ts:296](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L296)
 
 ___
 
@@ -177,7 +181,7 @@ The latest onchain checkpoint for all chains.
 
 #### Defined in
 
-[src/WitnessClient.ts:359](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L359)
+[src/WitnessClient.ts:366](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L366)
 
 ___
 
@@ -201,7 +205,7 @@ The latest onchain checkpoint.
 
 #### Defined in
 
-[src/WitnessClient.ts:326](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L326)
+[src/WitnessClient.ts:333](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L333)
 
 ___
 
@@ -225,7 +229,7 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:264](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L264)
+[src/WitnessClient.ts:277](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L277)
 
 ___
 
@@ -252,7 +256,7 @@ The Merkle proof for the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:434](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L434)
+[src/WitnessClient.ts:439](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L439)
 
 ___
 
@@ -277,7 +281,7 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:243](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L243)
+[src/WitnessClient.ts:256](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L256)
 
 ___
 
@@ -301,7 +305,7 @@ Hashes a string using the keccak256 algorithm.
 
 #### Defined in
 
-[src/WitnessClient.ts:537](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L537)
+[src/WitnessClient.ts:541](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L541)
 
 ___
 
@@ -325,7 +329,7 @@ The index of the posted leafHash.
 
 #### Defined in
 
-[src/WitnessClient.ts:175](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L175)
+[src/WitnessClient.ts:192](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L192)
 
 ___
 
@@ -357,7 +361,7 @@ checkpointed leaf, it may take up to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:201](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L201)
+[src/WitnessClient.ts:214](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L214)
 
 ___
 
@@ -390,7 +394,7 @@ to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:227](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L227)
+[src/WitnessClient.ts:240](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L240)
 
 ___
 
@@ -427,7 +431,7 @@ potential issues such as rate limits.
 
 #### Defined in
 
-[src/WitnessClient.ts:504](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L504)
+[src/WitnessClient.ts:508](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L508)
 
 ___
 
@@ -462,7 +466,7 @@ proof and checkpoint against the corresponding Witness contract on-chain.
 
 #### Defined in
 
-[src/WitnessClient.ts:474](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L474)
+[src/WitnessClient.ts:479](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L479)
 
 ___
 
@@ -489,4 +493,4 @@ The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:142](https://github.com/WitnessCo/client/blob/ce39dd4/src/WitnessClient.ts#L142)
+[src/WitnessClient.ts:159](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L159)

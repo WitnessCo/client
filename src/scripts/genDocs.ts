@@ -1,5 +1,5 @@
-import fs from "fs-extra";
-import TypeDoc from "typedoc";
+import * as fs from "fs-extra";
+import * as TypeDoc from "typedoc";
 
 await genLocalDocs();
 
@@ -8,6 +8,7 @@ const sourceFile = "docsTmp/classes/WitnessClient.md";
 const destFile = "docs/WitnessClient.md";
 const contents = await fs.readFile(sourceFile, "utf8");
 const cleanedContents = await cleanContents(contents);
+await fs.ensureFile(destFile);
 await fs.writeFile(destFile, cleanedContents);
 
 // Generate the docs in this package's "docs" directory.
