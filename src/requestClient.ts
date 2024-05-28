@@ -1,77 +1,65 @@
-// Modified from https://github.com/kubb-labs/kubb/blob/main/packages/swagger-client/client.ts.
-import axios from "axios";
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import axiosRetry from "axios-retry";
-import type { EndpointType } from "./types/api";
+import type { EndpointType } from "./types/api.js";
+import { fetchHelper } from "./utils.js";
 
 /**
- * Subset of AxiosRequestConfig
- */
-type RequestConfigPartial = {
-	baseURL?: string;
-	url?: string;
-	responseType?:
-		| "arraybuffer"
-		| "blob"
-		| "document"
-		| "json"
-		| "text"
-		| "stream";
-	signal?: AbortSignal;
-	headers?: AxiosRequestConfig["headers"];
-	method: "get" | "put" | "patch" | "post" | "delete";
-};
-type RequestConfig<TData = unknown> =
-	| (RequestConfigPartial & { method: "get"; params: TData })
-	| (RequestConfigPartial & {
-			method: "put" | "patch" | "post" | "delete";
-			data: TData;
-	  });
-
-/**
- * Subset of AxiosResponse
- */
-type ResponseConfig<TData = unknown> = {
-	data: TData;
-	status: number;
-	statusText: string;
-	headers?: AxiosResponse["headers"];
-};
-
-/**
- * Creates an Axios client with the given base URL and optional auth token.
+ * Creates a request client with the given base URL and optional auth token.
  *
  * @param baseURL - The base URL for the client.
  * @param authToken - The auth token to use for requests.
- * @returns A function that makes requests against an axios client with the given configuration.
+ * @returns A function that makes requests against a request client with the given configuration.
  */
-export const createAxiosClient = (
+export const createRequestClient = (
 	baseURL: EndpointType,
 	authToken?: string,
 ) => {
-	const authHeader = authToken ? { Authorization: `Bearer ${authToken}` } : {};
-	const headers = { "User-Agent": "WitnessCo/Client", ...authHeader };
-	const axiosInstance = axios.create({ baseURL, headers });
-	axiosRetry(axiosInstance, {
-		// Retry all failed requests; typically POST requests are not idempotent and skipped,
-		// but in this case we want to retry them.
-		retryCondition: () => true,
-		retryDelay: axiosRetry.exponentialDelay,
-	});
+	const authHeader = authToken
+		? { Authorization: `Bearer ${authToken}` }
+		: undefined;
 
 	async function makeRequest<
 		TResponseData,
-		TRequestData = unknown,
-		TError = unknown,
-	>(
-		config: RequestConfig<TRequestData>,
-	): Promise<ResponseConfig<TResponseData>> {
-		return axiosInstance
-			.request<TResponseData, ResponseConfig<TResponseData>>(config)
-			.catch((e: AxiosError<TError>) => {
-				throw e;
-			});
+		TRequestData extends TRequestArgs = Record<string, never>,
+	>(config: RequestConfig<TRequestData>): Promise<TResponseData> {
+		const { method, url, signal, headers: customHeaders } = config;
+		let body: string | undefined;
+		const requestUrl = new URL(url, baseURL);
+
+		if (method === "get" && config.params) {
+			for (const [key, value] of Object.entries(config.params)) {
+				if (value !== undefined) {
+					requestUrl.searchParams.append(key, value.toString());
+				}
+			}
+		} else if (method !== "get" && config.data) {
+			body = JSON.stringify(config.data);
+		}
+		const data = await fetchHelper(requestUrl.toString(), {
+			method,
+			headers: {
+				"Content-Type": "application/json",
+				"User-Agent": "WitnessCo/Client",
+				...authHeader,
+				...customHeaders,
+			},
+			signal,
+			body,
+		});
+		return data as TResponseData;
 	}
 
 	return makeRequest;
 };
+
+type TRequestArgs = Record<string, string | string[] | number> | undefined;
+type RequestConfigPartial = {
+	url: string;
+	signal?: AbortSignal;
+	headers?: Record<string, string>;
+	method: "get" | "put" | "patch" | "post" | "delete";
+};
+type RequestConfig<TData extends TRequestArgs> =
+	| (RequestConfigPartial & { method: "get"; params?: TData })
+	| (RequestConfigPartial & {
+			method: "put" | "patch" | "post" | "delete";
+			data?: TData;
+	  });

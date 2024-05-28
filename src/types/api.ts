@@ -1,8 +1,8 @@
 import type { Infer, RequestParams, Response } from "@kubb/oas";
-import type openapi from "../openapi";
+import type { schema } from "../openapi";
 
 /** @internal */
-export type OpenapiConfigType = Infer<typeof openapi>;
+export type OpenapiConfigType = Infer<typeof schema>;
 
 /** @internal */
 export type EndpointType = OpenapiConfigType["servers"][number]["url"];

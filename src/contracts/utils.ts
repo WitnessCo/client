@@ -8,34 +8,12 @@ import {
 	getContract,
 } from "viem";
 import {
-	arbitrumSepolia,
-	base,
-	baseSepolia,
-	gnosisChiado,
-	mainnet,
-	optimism,
-	optimismSepolia,
-	sepolia,
-} from "viem/chains";
-import type { ChainConfig } from "../types/config";
-import { witness as witnessAbi } from "./abis";
-import { witnessDeployments } from "./deployments";
-
-export const supportedChains = [
-	base,
-	mainnet,
-	optimism,
-	baseSepolia,
-	sepolia,
-	optimismSepolia,
-	arbitrumSepolia,
-	gnosisChiado,
-] as const;
-
-export type SupportedChainType = (typeof supportedChains)[number];
-
-export const supportedChainIds = supportedChains.map((c) => c.id);
-export type SupportedChainIdType = (typeof supportedChainIds)[number];
+	type ChainConfig,
+	type SupportedChainType,
+	supportedChains,
+} from "../types/config.js";
+import { witness as witnessAbi } from "./abis.js";
+import { witnessDeployments } from "./deployments.js";
 
 export const getSupportedChainFromChainId = (chainId: number) => {
 	const res = supportedChains.find((c) => c.id === chainId);

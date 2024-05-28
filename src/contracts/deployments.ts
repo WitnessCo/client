@@ -9,7 +9,7 @@ import {
 	optimismSepolia,
 	sepolia,
 } from "viem/chains";
-import type { SupportedChainIdType } from "./utils";
+import { SupportedChainIdType } from "../types/config.js";
 
 export type DeploymentEntry = {
 	address: Address;

@@ -1,7 +1,7 @@
 import { Hash, encodePacked, keccak256 } from "viem";
-import { getContractFromChainConfig } from "./contracts";
-import { defaultChainConfig, defaultServerConfig } from "./defaults";
-import { createAxiosClient } from "./requestClient";
+import { getContractFromChainConfig } from "./contracts/index.js";
+import { defaultChainConfig, defaultServerConfig } from "./defaults.js";
+import { createRequestClient } from "./requestClient.js";
 import type {
 	EndpointType,
 	GetCheckpointByTransactionHashRequest,
@@ -22,9 +22,13 @@ import type {
 	PostLeafResponse,
 	PostProofRequest,
 	PostProofResponse,
-} from "./types/api";
-import type { ChainConfig, Config, WitnessContractType } from "./types/config";
-import { strArrToHash, strToHash } from "./utils";
+} from "./types/api.js";
+import type {
+	ChainConfig,
+	Config,
+	WitnessContractType,
+} from "./types/config.js";
+import { strArrToHash, strToHash } from "./utils.js";
 
 /**
  * Represents a client for interacting with the Witness server and contract.
@@ -55,7 +59,7 @@ import { strArrToHash, strToHash } from "./utils";
  */
 export class WitnessClient {
 	/** @internal */
-	private readonly client: ReturnType<typeof createAxiosClient>;
+	private readonly client: ReturnType<typeof createRequestClient>;
 	/** @internal */
 	private readonly chainId: number;
 	/** @internal */
@@ -112,7 +116,7 @@ export class WitnessClient {
 			...server,
 		};
 		this.chainId = chainId;
-		this.client = createAxiosClient(endpoint as EndpointType, authToken);
+		this.client = createRequestClient(endpoint as EndpointType, authToken);
 	}
 
 	/**
@@ -121,11 +125,6 @@ export class WitnessClient {
 	 * @returns The current tree state.
 	 */
 	public async getCurrentTreeState() {
-		const res = await this.client<GetTreeStateResponse>({
-			method: "get",
-			url: "/getTreeState",
-			params: {},
-		});
 		const {
 			leafCount,
 			merklizedRoot,
@@ -133,7 +132,11 @@ export class WitnessClient {
 			unmerklizedLeafCount,
 			checkpointedRoot,
 			checkpointedLeafCount,
-		} = res.data;
+		} = await this.client<GetTreeStateResponse>({
+			method: "get",
+			url: "/getTreeState",
+			params: {},
+		});
 		return {
 			leafCount: BigInt(leafCount),
 			merklizedRoot: strToHash(merklizedRoot),
@@ -187,12 +190,12 @@ export class WitnessClient {
 	 * @returns The index of the posted leafHash.
 	 */
 	public async postLeaf(leafHash: Hash) {
-		const res = await this.client<PostLeafResponse, PostLeafRequest>({
+		const { leafIndex } = await this.client<PostLeafResponse, PostLeafRequest>({
 			method: "post",
 			url: "/postLeafHash",
 			data: { leafHash },
 		});
-		return { leafHash, leafIndex: BigInt(res.data.leafIndex) };
+		return { leafHash, leafIndex: BigInt(leafIndex) };
 	}
 
 	/**
@@ -254,7 +257,7 @@ export class WitnessClient {
 		leafHash: Hash,
 		chainId: number = this.chainId,
 	) {
-		const res = await this.client<
+		const { timestamp } = await this.client<
 			GetTimestampForLeafHashResponse,
 			GetTimestampForLeafHashRequest
 		>({
@@ -262,7 +265,7 @@ export class WitnessClient {
 			url: "/getTimestampByLeafHash",
 			params: { leafHash, chainId },
 		});
-		return new Date(Number(res.data.timestamp) * 1000);
+		return new Date(Number(timestamp) * 1000);
 	}
 
 	/**
@@ -280,7 +283,7 @@ export class WitnessClient {
 			url: "/getLeafIndexByHash",
 			params: { leafHash },
 		});
-		return BigInt(res.data.leafIndex);
+		return BigInt(res.leafIndex);
 	}
 
 	/**
@@ -294,14 +297,6 @@ export class WitnessClient {
 		leafIndex: bigint,
 		chainId: number = this.chainId,
 	) {
-		const res = await this.client<
-			GetEarliestCheckpointCoveringLeafIndexResponse,
-			GetEarliestCheckpointCoveringLeafIndexRequest
-		>({
-			method: "get",
-			url: "/getEarliestCheckpointCoveringLeafIndex",
-			params: { chainId, leafIndex: leafIndex.toString() },
-		});
 		const {
 			blockNumber,
 			blockHash,
@@ -310,7 +305,14 @@ export class WitnessClient {
 			treeSize,
 			txHash,
 			...rest
-		} = res.data;
+		} = await this.client<
+			GetEarliestCheckpointCoveringLeafIndexResponse,
+			GetEarliestCheckpointCoveringLeafIndexRequest
+		>({
+			method: "get",
+			url: "/getEarliestCheckpointCoveringLeafIndex",
+			params: { chainId, leafIndex: leafIndex.toString() },
+		});
 		return {
 			...rest,
 			blockNumber: BigInt(blockNumber),
@@ -329,14 +331,6 @@ export class WitnessClient {
 	 * @returns The latest onchain checkpoint.
 	 */
 	public async getLatestOnchainCheckpoint(chainId = this.chainId) {
-		const res = await this.client<
-			GetLatestCheckpointResponse,
-			GetLatestCheckpointRequest
-		>({
-			method: "get",
-			url: "/getLatestCheckpoint",
-			params: { chainId },
-		});
 		const {
 			blockNumber,
 			blockHash,
@@ -345,7 +339,14 @@ export class WitnessClient {
 			treeSize,
 			txHash,
 			...rest
-		} = res.data;
+		} = await this.client<
+			GetLatestCheckpointResponse,
+			GetLatestCheckpointRequest
+		>({
+			method: "get",
+			url: "/getLatestCheckpoint",
+			params: { chainId },
+		});
 		return {
 			...rest,
 			blockNumber: BigInt(blockNumber),
@@ -368,14 +369,12 @@ export class WitnessClient {
 			url: "/getLatestCheckpointForAllChains",
 			params: {},
 		});
-
-		const data = res.data;
 		const transformedData: Record<
 			string,
 			{ [key: string]: string | bigint | Date | number }
 		> = {};
 
-		for (const chainId in data) {
+		for (const chainId in res) {
 			const {
 				blockNumber,
 				blockHash,
@@ -384,7 +383,7 @@ export class WitnessClient {
 				treeSize,
 				txHash,
 				...rest
-			} = data[chainId];
+			} = res[chainId];
 
 			transformedData[chainId] = {
 				...rest,
@@ -407,16 +406,15 @@ export class WitnessClient {
 	 * @returns The checkpoint with the specified transaction hash.
 	 */
 	public async getCheckpointByTxHash(txHash: Hash) {
-		const res = await this.client<
-			GetCheckpointByTransactionHashResponse,
-			GetCheckpointByTransactionHashRequest
-		>({
-			method: "get",
-			url: "/getCheckpointByTransactionHash",
-			params: { txHash },
-		});
 		const { blockNumber, blockHash, timestamp, rootHash, treeSize, ...rest } =
-			res.data;
+			await this.client<
+				GetCheckpointByTransactionHashResponse,
+				GetCheckpointByTransactionHashRequest
+			>({
+				method: "get",
+				url: "/getCheckpointByTransactionHash",
+				params: { txHash },
+			});
 		return {
 			...rest,
 			blockNumber: BigInt(blockNumber),
@@ -445,19 +443,19 @@ export class WitnessClient {
 			chainId = this.chainId,
 		}: { chainId?: number; targetTreeSize?: bigint } = {},
 	) {
-		const res = await this.client<
-			GetProofForLeafHashResponse,
-			GetProofForLeafHashRequest
-		>({
-			method: "get",
-			url: "/getProofForLeafHash",
-			params: {
-				leafHash,
-				chainId,
-				targetTreeSize: targetTreeSize?.toString(),
-			},
-		});
-		const { leafIndex, leftHashes, rightHashes, targetRootHash } = res.data;
+		const { leafIndex, leftHashes, rightHashes, targetRootHash } =
+			await this.client<
+				GetProofForLeafHashResponse,
+				GetProofForLeafHashRequest
+			>({
+				method: "get",
+				url: "/getProofForLeafHash",
+				params: {
+					leafHash,
+					chainId,
+					targetTreeSize: targetTreeSize?.toString(),
+				},
+			});
 		return {
 			leafIndex: BigInt(leafIndex),
 			leafHash,
@@ -491,7 +489,7 @@ export class WitnessClient {
 			url: "/postProof",
 			data: { leafIndex: leafIndex.toString(), ...restOfProof },
 		});
-		return res.data.success;
+		return res.success;
 	}
 
 	/**
