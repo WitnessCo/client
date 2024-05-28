@@ -1,6 +1,6 @@
 {
 	"name": "@witnessco/client",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"description": "Typescript SDK for Witness",
 	"type": "module",
 	"license": "MIT",
@@ -20,7 +20,12 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": ["README.md", "dist", "docs", "src"],
+	"files": [
+		"README.md",
+		"dist",
+		"docs",
+		"src"
+	],
 	"exports": {
 		".": {
 			"require": "./dist/index.cjs",
