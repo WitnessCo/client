@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.4.3
+
+### Patch Changes
+
+- 894c0a6: Added export for config/type utilities.
+
 ## 0.4.2
 
 ### Patch Changes
