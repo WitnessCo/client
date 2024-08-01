@@ -40,7 +40,7 @@
 
 ### Minor Changes
 
-- 8a4c398: Gnosis Chidao chain now supported in client
+- 8a4c398: Gnosis Chiado chain now supported in client
 - 15ff607: getLatestCheckpointForAllChains endpoint is now supported in the client
 
 ## 0.1.16
