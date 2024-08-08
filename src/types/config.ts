@@ -6,6 +6,7 @@ import type {
 	Transport,
 } from "viem";
 import {
+	arbitrum,
 	arbitrumSepolia,
 	base,
 	baseSepolia,
@@ -22,6 +23,7 @@ export const supportedChains = [
 	base,
 	mainnet,
 	optimism,
+	arbitrum,
 	baseSepolia,
 	sepolia,
 	optimismSepolia,

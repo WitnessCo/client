@@ -1,3 +1,3 @@
-export { witness as witnessAbi } from "./abis.js";
-export { witnessDeployments } from "./deployments.js";
-export * from "./utils.js";
+export { witness as witnessAbi } from "./abis";
+export { witnessDeployments } from "./deployments";
+export * from "./utils";

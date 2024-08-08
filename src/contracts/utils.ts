@@ -7,13 +7,12 @@ import {
 	createPublicClient,
 	getContract,
 } from "viem";
-import {
-	type ChainConfig,
-	type SupportedChainType,
-	supportedChains,
-} from "../types/config.js";
-import { witness as witnessAbi } from "./abis.js";
-import { witnessDeployments } from "./deployments.js";
+import type { ChainConfig } from "../types/config";
+import { SupportedChainType, supportedChains } from "../types/config";
+import { witness as witnessAbi } from "./abis";
+import { witnessDeployments } from "./deployments";
+
+export const supportedChainIds = supportedChains.map((c) => c.id);
 
 export const getSupportedChainFromChainId = (chainId: number) => {
 	const res = supportedChains.find((c) => c.id === chainId);
