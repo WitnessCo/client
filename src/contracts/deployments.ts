@@ -1,5 +1,6 @@
 import type { Address } from "viem";
 import {
+	arbitrum,
 	arbitrumSepolia,
 	base,
 	baseSepolia,
@@ -29,6 +30,10 @@ export const witnessDeployments: Record<SupportedChainIdType, DeploymentEntry> =
 		[optimism.id]: {
 			address: "0x0000000e143f453f45B2E1cCaDc0f3CE21c2F06a",
 			startBlock: 116171910,
+		},
+		[arbitrum.id]: {
+			address: "0x0000000e143f453f45B2E1cCaDc0f3CE21c2F06a",
+			startBlock: 240455867,
 		},
 		[baseSepolia.id]: {
 			address: "0x0000000159C8253802551eEaf8b475db1A50d712",
