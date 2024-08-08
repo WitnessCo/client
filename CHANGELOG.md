@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.5.0
+
+### Minor Changes
+
+- 9754dcf: Arbitrum now supported in client
+
 ## 0.4.3
 
 ### Patch Changes

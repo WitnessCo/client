@@ -1,6 +1,6 @@
 {
 	"name": "@witnessco/client",
-	"version": "0.4.3",
+	"version": "0.5.0",
 	"description": "Typescript SDK for Witness",
 	"type": "module",
 	"license": "MIT",
