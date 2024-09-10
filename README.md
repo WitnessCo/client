@@ -1,4 +1,4 @@
-# WITNESS
+# WITNESS SDK
 
 ## Features
 
