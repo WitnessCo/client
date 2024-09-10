@@ -1,4 +1,4 @@
-# Witness Client
+# WITNESS
 
 ## Features
 
