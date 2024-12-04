@@ -96,7 +96,7 @@ Full client config customization options are as follows:
 
 #### Defined in
 
-[src/WitnessClient.ts:102](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L102)
+[src/WitnessClient.ts:102](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L102)
 
 ## Methods
 
@@ -120,7 +120,7 @@ The checkpoint with the specified transaction hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:408](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L408)
+[src/WitnessClient.ts:415](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L415)
 
 ___
 
@@ -138,7 +138,7 @@ The current tree state.
 
 #### Defined in
 
-[src/WitnessClient.ts:127](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L127)
+[src/WitnessClient.ts:127](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L127)
 
 ___
 
@@ -163,7 +163,7 @@ The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:296](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L296)
+[src/WitnessClient.ts:303](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L303)
 
 ___
 
@@ -181,7 +181,7 @@ The latest onchain checkpoint for all chains.
 
 #### Defined in
 
-[src/WitnessClient.ts:366](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L366)
+[src/WitnessClient.ts:373](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L373)
 
 ___
 
@@ -205,7 +205,7 @@ The latest onchain checkpoint.
 
 #### Defined in
 
-[src/WitnessClient.ts:333](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L333)
+[src/WitnessClient.ts:340](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L340)
 
 ___
 
@@ -229,7 +229,7 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:277](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L277)
+[src/WitnessClient.ts:284](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L284)
 
 ___
 
@@ -256,7 +256,7 @@ The Merkle proof for the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:439](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L439)
+[src/WitnessClient.ts:446](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L446)
 
 ___
 
@@ -281,7 +281,7 @@ The index of the leaf with the specified hash.
 
 #### Defined in
 
-[src/WitnessClient.ts:256](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L256)
+[src/WitnessClient.ts:263](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L263)
 
 ___
 
@@ -305,7 +305,7 @@ Hashes a string using the keccak256 algorithm.
 
 #### Defined in
 
-[src/WitnessClient.ts:541](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L541)
+[src/WitnessClient.ts:548](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L548)
 
 ___
 
@@ -329,23 +329,24 @@ The index of the posted leafHash.
 
 #### Defined in
 
-[src/WitnessClient.ts:192](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L192)
+[src/WitnessClient.ts:194](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L194)
 
 ___
 
 ### postLeafAndGetProof
 
-▸ **postLeafAndGetProof**(`leafHash`, `chainId?`): `Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint` ; `leftHashes`: `Hash`[] ; `rightHashes`: `Hash`[] ; `targetRootHash`: `Hash`  }\>
+▸ **postLeafAndGetProof**(`leafHash`, `chainId?`, `timeoutMs?`): `Promise`\<\{ `leafHash`: `Hash` ; `leafIndex`: `bigint` ; `leftHashes`: `Hash`[] ; `rightHashes`: `Hash`[] ; `targetRootHash`: `Hash`  }\>
 
 Posts a leaf and waits until it can return with a
 checkpointed proof.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `leafHash` | `Hash` | The leaf to post. |
-| `chainId` | `number` | Optional, the chain ID to get a proof for. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `leafHash` | `Hash` | `undefined` | The leaf to post. |
+| `chainId` | `number` | `undefined` | Optional, the chain ID to get a proof for. |
+| `timeoutMs` | `number` | `defaultTimeoutMs` | Optional, the timeout in milliseconds. |
 
 #### Returns
 
@@ -361,23 +362,24 @@ checkpointed leaf, it may take up to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:214](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L214)
+[src/WitnessClient.ts:217](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L217)
 
 ___
 
 ### postLeafAndGetTimestamp
 
-▸ **postLeafAndGetTimestamp**(`leafHash`, `chainId?`): `Promise`\<`Date`\>
+▸ **postLeafAndGetTimestamp**(`leafHash`, `chainId?`, `timeoutMs?`): `Promise`\<`Date`\>
 
 Posts a leaf and waits until it can return with a
 checkpointed timestamp.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `leafHash` | `Hash` | The leaf to post. |
-| `chainId` | `number` | Optional, the chain ID to get a timestamp for. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `leafHash` | `Hash` | `undefined` | The leaf to post. |
+| `chainId` | `number` | `undefined` | Optional, the chain ID to get a timestamp for. |
+| `timeoutMs` | `number` | `defaultTimeoutMs` | Optional, the timeout in milliseconds. |
 
 #### Returns
 
@@ -394,7 +396,7 @@ to a few minutes to return.
 
 #### Defined in
 
-[src/WitnessClient.ts:240](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L240)
+[src/WitnessClient.ts:246](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L246)
 
 ___
 
@@ -431,7 +433,7 @@ potential issues such as rate limits.
 
 #### Defined in
 
-[src/WitnessClient.ts:508](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L508)
+[src/WitnessClient.ts:515](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L515)
 
 ___
 
@@ -466,13 +468,13 @@ proof and checkpoint against the corresponding Witness contract on-chain.
 
 #### Defined in
 
-[src/WitnessClient.ts:479](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L479)
+[src/WitnessClient.ts:486](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L486)
 
 ___
 
 ### waitForCheckpointedLeafHash
 
-▸ **waitForCheckpointedLeafHash**(`leafHash`, `chainId?`): `Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"included"`` \| ``"finalized"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
+▸ **waitForCheckpointedLeafHash**(`leafHash`, `chainId?`, `timeoutMs?`): `Promise`\<\{ `blockHash`: `Hash` ; `blockNumber`: `bigint` ; `chainId`: `number` ; `rootHash`: `Hash` ; `status`: ``"pending"`` \| ``"included"`` \| ``"finalized"`` ; `timestamp`: `Date` ; `treeSize`: `bigint` ; `txHash`: `Hash`  }\>
 
 Waits for a checkpoint covering the given leaf hash.
 This method will wait up to 15 minutes for a checkpoint to be
@@ -480,10 +482,11 @@ created covering the given leaf, polling at a 5s interval.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `leafHash` | `Hash` | The leaf to wait for. |
-| `chainId` | `number` | Optional, the chain ID to query for. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `leafHash` | `Hash` | `undefined` | The leaf to wait for. |
+| `chainId` | `number` | `undefined` | Optional, the chain ID to query for. |
+| `timeoutMs` | `number` | `defaultTimeoutMs` | Optional, the timeout in milliseconds. |
 
 #### Returns
 
@@ -493,4 +496,4 @@ The earliest checkpoint that covers the specified leaf.
 
 #### Defined in
 
-[src/WitnessClient.ts:159](https://github.com/WitnessCo/client/blob/4db501c/src/WitnessClient.ts#L159)
+[src/WitnessClient.ts:160](https://github.com/WitnessCo/client/blob/544a935/src/WitnessClient.ts#L160)

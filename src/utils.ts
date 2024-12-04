@@ -54,3 +54,6 @@ export const fetchHelper = async (
 };
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// 15 minutes in milliseconds.
+export const defaultTimeoutMs = 15 * 60 * 1000;
