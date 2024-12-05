@@ -52,7 +52,8 @@
 		"example": "tsx watch ./src/example.ts",
 		"dev": "tsup --watch",
 		"generate:docs": "bun run src/scripts/genDocs.ts",
-		"publish-package": "changeset publish"
+		"publish-package": "changeset publish",
+		"ci:publish": "bun run build && bun generate:docs && bun run format && bun run publish-package"
 	},
 	"dependencies": {
 		"@kubb/oas": "^2.18.7"

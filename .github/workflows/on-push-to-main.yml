@@ -23,9 +23,9 @@ jobs:
         uses: ./.github/workflows/ci
       - name: Build & Publish
         id: changesets
-        uses: changesets/action@v1.4.5
+        uses: changesets/action@v1
         with:
-          publish: bun run build && bun generate:docs && bun run format && bun run publish-package
+          publish: bun run ci:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
