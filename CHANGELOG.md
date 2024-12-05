@@ -1,5 +1,11 @@
 # @witnessco/client
 
+## 0.6.0
+
+### Minor Changes
+
+- 4a6c9fb: Supporting custom timeout for waiting methods
+
 ## 0.5.0
 
 ### Minor Changes
