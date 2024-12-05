@@ -28,7 +28,7 @@ import type {
 	Config,
 	WitnessContractType,
 } from "./types/config.js";
-import { strArrToHash, strToHash } from "./utils.js";
+import { defaultTimeoutMs, strArrToHash, strToHash } from "./utils.js";
 
 /**
  * Represents a client for interacting with the Witness server and contract.
@@ -154,11 +154,13 @@ export class WitnessClient {
 	 *
 	 * @param {Hash} leafHash - The leaf to wait for.
 	 * @param {number} chainId - Optional, the chain ID to query for.
+	 * @param {number} timeoutMs - Optional, the timeout in milliseconds.
 	 * @returns The earliest checkpoint that covers the specified leaf.
 	 */
 	public async waitForCheckpointedLeafHash(
 		leafHash: Hash,
 		chainId: number = this.chainId,
+		timeoutMs: number = defaultTimeoutMs,
 	) {
 		const startTime = Date.now();
 		const leafIndex = await this.getLeafIndexForHash(leafHash);
@@ -172,8 +174,8 @@ export class WitnessClient {
 					...restCheckpoint,
 				};
 			}
-			// Timeout if we've been trying for 15 minutes.
-			if (Date.now() - startTime > 15 * 60 * 1000) {
+			// Timeout if we've been trying for timeoutMs.
+			if (Date.now() - startTime > timeoutMs) {
 				throw new Error(
 					`Timeout waiting for checkpoint covering leafIndex ${leafIndex}`,
 				);
@@ -209,16 +211,19 @@ export class WitnessClient {
 	 *
 	 * @param {Hash} leafHash - The leaf to post.
 	 * @param {number} chainId - Optional, the chain ID to get a proof for.
+	 * @param {number} timeoutMs - Optional, the timeout in milliseconds.
 	 * @returns The proof for the specified leaf.
 	 */
 	public async postLeafAndGetProof(
 		leafHash: Hash,
 		chainId: number = this.chainId,
+		timeoutMs: number = defaultTimeoutMs,
 	) {
 		await this.postLeaf(leafHash);
 		const { treeSize } = await this.waitForCheckpointedLeafHash(
 			leafHash,
 			chainId,
+			timeoutMs,
 		);
 		return this.getProofForLeafHash(leafHash, { targetTreeSize: treeSize });
 	}
@@ -235,14 +240,16 @@ export class WitnessClient {
 	 *
 	 * @param {Hash} leafHash - The leaf to post.
 	 * @param {number} chainId - Optional, the chain ID to get a timestamp for.
+	 * @param {number} timeoutMs - Optional, the timeout in milliseconds.
 	 * @returns The timestamp for the specified leaf.
 	 */
 	public async postLeafAndGetTimestamp(
 		leafHash: Hash,
 		chainId: number = this.chainId,
+		timeoutMs: number = defaultTimeoutMs,
 	) {
 		await this.postLeaf(leafHash);
-		await this.waitForCheckpointedLeafHash(leafHash, chainId);
+		await this.waitForCheckpointedLeafHash(leafHash, chainId, timeoutMs);
 		return this.getTimestampForLeafHash(leafHash, chainId);
 	}
 
